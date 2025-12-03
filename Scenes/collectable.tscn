@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://cbnhj6gv5qup2"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/Collectable.gd" id="1_6bw5n"]
+[ext_resource type="Resource" uid="uid://bodb7ekvhgpxm" path="res://Resources/Items/apple.tres" id="2_2ftot"]
+[ext_resource type="Texture2D" uid="uid://dysvl3j8aku4m" path="res://Assets/apple-icon.png" id="3_14xdk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cyk2d"]
+size = Vector3(1.09082, 1.31665, 0.297852)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kvhhe"]
+radius = 0.423809
+height = 0.847619
+
+[node name="Collectable" type="StaticBody3D"]
+script = ExtResource("1_6bw5n")
+item = ExtResource("2_2ftot")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+texture = ExtResource("3_14xdk")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.171875, 0)
+shape = SubResource("BoxShape3D_cyk2d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_kvhhe")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

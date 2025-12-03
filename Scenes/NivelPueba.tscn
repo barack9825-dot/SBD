@@ -1,0 +1,492 @@
+[gd_scene load_steps=25 format=3 uid="uid://ccq8hh1qdlwsc"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_al807"]
+[ext_resource type="PackedScene" uid="uid://c6p6xxy54pwd1" path="res://Blender/BlenderCopy.tscn" id="3_rieqm"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/LightIntensityControl.gd" id="4_kjvlv"]
+[ext_resource type="PackedScene" uid="uid://b281eehjp4h04" path="res://Blender/Jorge.blend" id="4_s4uax"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/PlayerCamera.gd" id="4_vqmmx"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/OmniLight3D.gd" id="5_5xkov"]
+[ext_resource type="PackedScene" uid="uid://djb7df6hrunqe" path="res://Scenes/Player.tscn" id="5_atcrf"]
+[ext_resource type="AudioStream" uid="uid://uycm5wi66781" path="res://Assets/Audio/lost-soul_30sec-177569.mp3" id="6_bx5ev"]
+[ext_resource type="Texture2D" uid="uid://bx2okgt30so0d" path="res://Assets/fondo P.png" id="7_4oogf"]
+[ext_resource type="PackedScene" uid="uid://tn5jvy5eya77" path="res://Scenes/fp_scounter.tscn" id="9_3vbba"]
+[ext_resource type="Texture2D" uid="uid://ctq6bhodhdvdy" path="res://Assets/OIP.jpeg" id="9_o4bpr"]
+[ext_resource type="PackedScene" uid="uid://cbnhj6gv5qup2" path="res://Scenes/collectable.tscn" id="13_7xmxp"]
+[ext_resource type="PackedScene" uid="uid://cl6uvqgumv42v" path="res://Scenes/Enemy.tscn" id="13_70t8y"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3i0yw"]
+size = Vector3(1, 0.484863, 35.8215)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e4asq"]
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_y0wej"]
+data = PackedVector3Array(-0.5, 0.05, 0.5, 0.5, 0.05, 0.5, -0.5, -0.05, 0.5, 0.5, 0.05, 0.5, 0.5, -0.05, 0.5, -0.5, -0.05, 0.5, 0.5, 0.05, -0.5, -0.5, 0.05, -0.5, 0.5, -0.05, -0.5, -0.5, 0.05, -0.5, -0.5, -0.05, -0.5, 0.5, -0.05, -0.5, 0.5, 0.05, 0.5, 0.5, 0.05, -0.5, 0.5, -0.05, 0.5, 0.5, 0.05, -0.5, 0.5, -0.05, -0.5, 0.5, -0.05, 0.5, -0.5, 0.05, -0.5, -0.5, 0.05, 0.5, -0.5, -0.05, -0.5, -0.5, 0.05, 0.5, -0.5, -0.05, 0.5, -0.5, -0.05, -0.5, 0.5, 0.05, 0.5, -0.5, 0.05, 0.5, 0.5, 0.05, -0.5, -0.5, 0.05, 0.5, -0.5, 0.05, -0.5, 0.5, 0.05, -0.5, -0.5, -0.05, 0.5, 0.5, -0.05, 0.5, -0.5, -0.05, -0.5, 0.5, -0.05, 0.5, 0.5, -0.05, -0.5, -0.5, -0.05, -0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qswxn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kqkjb"]
+size = Vector3(1, 1.20813, 0.52063)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jiete"]
+size = Vector3(1, 2.22168, 1.27655)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rvye4"]
+size = Vector3(1, 1, 2.92285)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s3lo8"]
+bg_color = Color(0.678431, 0, 0.156863, 1)
+border_width_left = 9
+border_width_top = 8
+border_color = Color(0.294118, 0.294118, 0.294118, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5wr4"]
+bg_color = Color(0.917647, 0.415686, 0.470588, 1)
+border_width_left = 11
+border_width_top = 11
+border_width_right = 11
+border_width_bottom = 11
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phs1g"]
+bg_color = Color(0.572549, 0, 0, 1)
+border_width_left = 11
+border_width_top = 11
+border_width_right = 11
+border_width_bottom = 11
+border_color = Color(0.988235, 0.988235, 0.988235, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oohu4"]
+size = Vector3(1, 1, 29.5197)
+
+[node name="Mundo" type="Node3D"]
+script = ExtResource("1_al807")
+
+[node name="BlenderImportCopy" parent="." instance=ExtResource("3_rieqm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.246, 0.007, 3.226)
+
+[node name="BlenderImport" parent="." instance=ExtResource("4_s4uax")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24598, 0.00681293, 3.22591)
+visible = false
+
+[node name="Casa 3" parent="BlenderImport" index="0"]
+transform = Transform3D(0, 6, -1.78814e-07, 1.78814e-07, 0, -6, -6, -1.78814e-07, 0, -0.004, 3.016, 0.982)
+layers = 8
+
+[node name="casa 1" parent="BlenderImport" index="1"]
+layers = 8
+
+[node name="Casa 3_ balcón" parent="BlenderImport" index="2"]
+layers = 4
+
+[node name="casa 4_ balcón" parent="BlenderImport" index="3"]
+layers = 4
+
+[node name="casa 4" parent="BlenderImport" index="4"]
+layers = 8
+
+[node name="casa2" parent="BlenderImport" index="5"]
+layers = 8
+
+[node name="casa5" parent="BlenderImport" index="6"]
+layers = 8
+
+[node name="casa 1_001" parent="BlenderImport" index="7"]
+layers = 64
+
+[node name="Casa 3_ balcón_001" parent="BlenderImport" index="8"]
+layers = 32
+
+[node name="casa 4_ balcón_001" parent="BlenderImport" index="9"]
+layers = 32
+
+[node name="casa 4_001" parent="BlenderImport" index="10"]
+layers = 64
+
+[node name="casa2_001" parent="BlenderImport" index="11"]
+layers = 64
+
+[node name="casa5_001" parent="BlenderImport" index="12"]
+layers = 64
+
+[node name="casa 1_002" parent="BlenderImport" index="13"]
+layers = 256
+
+[node name="casa 4_002" parent="BlenderImport" index="14"]
+layers = 256
+
+[node name="casa2_002" parent="BlenderImport" index="15"]
+layers = 256
+
+[node name="casa5_002" parent="BlenderImport" index="16"]
+layers = 256
+
+[node name="casa5_003" parent="BlenderImport" index="17"]
+layers = 16
+
+[node name="Casa 3_003" parent="BlenderImport" index="18"]
+layers = 8
+
+[node name="Casa 3_ balcón_003" parent="BlenderImport" index="19"]
+layers = 4
+
+[node name="casa 1_003" parent="BlenderImport" index="20"]
+layers = 256
+
+[node name="banco1" parent="BlenderImport" index="21"]
+layers = 4
+
+[node name="farola2" parent="BlenderImport" index="22"]
+layers = 2
+
+[node name="farola1" parent="BlenderImport" index="23"]
+layers = 2
+
+[node name="books paper" parent="BlenderImport" index="24"]
+layers = 8
+
+[node name="farola1_001" parent="BlenderImport" index="25"]
+layers = 32
+
+[node name="farola1_002" parent="BlenderImport" index="26"]
+layers = 128
+
+[node name="banco1_001" parent="BlenderImport" index="28"]
+layers = 16
+
+[node name="banco1_002" parent="BlenderImport" index="29"]
+layers = 4
+
+[node name="piso 2_" parent="BlenderImport" index="53"]
+layers = 2
+
+[node name="piso 3_3" parent="BlenderImport" index="54"]
+layers = 2
+
+[node name="piso 2__001" parent="BlenderImport" index="56"]
+layers = 4
+
+[node name="piso 3_001" parent="BlenderImport" index="58"]
+layers = 2
+
+[node name="piso 3_002" parent="BlenderImport" index="59"]
+layers = 2
+
+[node name="piso 2__003" parent="BlenderImport" index="60"]
+layers = 8
+
+[node name="piso 2__004" parent="BlenderImport" index="61"]
+layers = 128
+
+[node name="piso 2_3__001" parent="BlenderImport" index="62"]
+layers = 8
+
+[node name="piso 2_3__002" parent="BlenderImport" index="63"]
+layers = 32
+
+[node name="piso 2_3__003" parent="BlenderImport" index="64"]
+layers = 64
+
+[node name="piso 3_004" parent="BlenderImport" index="65"]
+layers = 32
+
+[node name="piso 3__001" parent="BlenderImport" index="66"]
+layers = 8
+
+[node name="piso 3__002" parent="BlenderImport" index="67"]
+layers = 4
+
+[node name="roca1_001" parent="BlenderImport" index="68"]
+layers = 2
+
+[node name="piso 2__005" parent="BlenderImport" index="79"]
+layers = 4
+
+[node name="piso 2__006" parent="BlenderImport" index="80"]
+layers = 16
+
+[node name="piso 3_006" parent="BlenderImport" index="83"]
+layers = 2
+
+[node name="piso 3__003" parent="BlenderImport" index="84"]
+layers = 4
+
+[node name="roca1_002" parent="BlenderImport" index="85"]
+layers = 4
+
+[node name="piso 3_007" parent="BlenderImport" index="86"]
+layers = 8
+
+[node name="piso 2_3__004" parent="BlenderImport" index="88"]
+layers = 64
+
+[node name="piso 2_3__005" parent="BlenderImport" index="89"]
+layers = 64
+
+[node name="piso 3_009" parent="BlenderImport" index="90"]
+layers = 32
+
+[node name="piso 3__004" parent="BlenderImport" index="91"]
+layers = 16
+
+[node name="roca1_003" parent="BlenderImport" index="92"]
+layers = 4
+
+[node name="piso 2_3__006" parent="BlenderImport" index="93"]
+layers = 128
+
+[node name="piso 2_3__007" parent="BlenderImport" index="94"]
+layers = 256
+
+[node name="piso 3_010" parent="BlenderImport" index="95"]
+layers = 64
+
+[node name="roca1_004" parent="BlenderImport" index="96"]
+layers = 64
+
+[node name="piso 3__005" parent="BlenderImport" index="97"]
+layers = 4
+sorting_offset = 2.0
+
+[node name="piso 3__006" parent="BlenderImport" index="98"]
+layers = 4
+sorting_offset = 1.0
+
+[node name="piso 3_011" parent="BlenderImport" index="99"]
+layers = 4
+
+[node name="piso 3_012" parent="BlenderImport" index="100"]
+layers = 16
+
+[node name="piso 3_013" parent="BlenderImport" index="101"]
+layers = 4
+
+[node name="piso 3_014" parent="BlenderImport" index="102"]
+layers = 8
+
+[node name="piso 3_015" parent="BlenderImport" index="103"]
+layers = 4
+
+[node name="piso 3_016" parent="BlenderImport" index="104"]
+layers = 8
+
+[node name="piso 3__007" parent="BlenderImport" index="105"]
+layers = 64
+
+[node name="FONDO" type="Sprite3D" parent="."]
+transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, -35.35, -1.838, -8.039)
+modulate = Color(0.494118, 0.494118, 0.494118, 1)
+texture = ExtResource("7_4oogf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.27888, 0, 3.31302)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.393765, -0.00415814, -11.3926)
+shape = SubResource("BoxShape3D_3i0yw")
+
+[node name="PlayerCamera" type="Camera3D" parent="." groups=["PlayerCamera"]]
+transform = Transform3D(-0.0279217, 0.062766, 0.997638, 0, 0.998027, -0.0627905, -0.99961, -0.00175322, -0.0278666, 12.6318, 1.838, -15.3327)
+keep_aspect = 0
+current = true
+fov = 49.6
+script = ExtResource("4_vqmmx")
+
+[node name="ZoneCamera" type="Camera3D" parent="."]
+transform = Transform3D(-0.0279217, 0.062766, 0.997638, 0, 0.998027, -0.0627905, -0.99961, -0.00175322, -0.0278666, 12.632, 2.302, 0)
+keep_aspect = 0
+fov = 49.6
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2384, 1.76746, -21.1859)
+light_color = Color(1, 1, 0.176471, 1)
+light_energy = 0.5
+omni_range = 4.12122
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72824, 1.59414, -11.6269)
+mesh = SubResource("BoxMesh_e4asq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" groups=["Plataforma"]]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_y0wej")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90937, 0.460278, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17088, 0.322329, 0)
+shape = SubResource("BoxShape3D_qswxn")
+
+[node name="spotLightMeacnism" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.39703, 0.901927, -13.0327)
+
+[node name="Area3D2" type="Area3D" parent="spotLightMeacnism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.352852, -0.587283, -0.418094)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11156, 0.58618, -0.0110664)
+shape = SubResource("BoxShape3D_kqkjb")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism"]
+transform = Transform3D(0.958949, -0.00275673, 0.283566, -0.28358, -0.00932222, 0.958903, 3.35276e-08, -0.999953, -0.00972128, -0.174026, 0.849073, -2.89331)
+light_color = Color(0.996078, 1, 0.478431, 1)
+light_energy = 1.9
+light_specular = 0.0
+shadow_enabled = true
+spot_range = 3.36982
+spot_angle = 32.95
+script = ExtResource("4_kjvlv")
+
+[node name="LighArea" type="Area3D" parent="spotLightMeacnism/SpotLight3D"]
+transform = Transform3D(0.951056, -6.96886e-10, -0.309017, 4.65661e-10, 0.999999, 0, 0.309017, -9.31323e-10, 0.951057, 0.268126, 0.00881386, -0.906648)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/SpotLight3D/LighArea"]
+transform = Transform3D(0.999999, 0.000107418, -0.0013613, -0.000100757, 0.999988, 0.00489198, 0.00136181, -0.00489184, 0.999987, 4.05312e-06, 1.23978e-05, 0.138277)
+shape = SubResource("BoxShape3D_jiete")
+
+[node name="Trigger" type="Node3D" parent="spotLightMeacnism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.201807, -3.40939e-05, -0.279806)
+
+[node name="Sprite3D" type="Sprite3D" parent="spotLightMeacnism/Trigger"]
+transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0.0586803, 0.0162812, -0.116955)
+texture = ExtResource("9_o4bpr")
+hframes = 2
+vframes = 4
+
+[node name="Label3D" type="Label3D" parent="spotLightMeacnism/Trigger"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.151045, 0.476392, 0.0820026)
+text = "Presiona X para
+ disminuir intensidad y
+ Z para aumentarla"
+
+[node name="omniLightMecanism" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="omniLightMecanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.154, 1.948, -1.996)
+light_color = Color(1, 1, 0.176471, 1)
+light_energy = 0.5
+omni_range = 2.8357
+script = ExtResource("5_5xkov")
+
+[node name="OmniLightArea" type="Area3D" parent="omniLightMecanism/OmniLight3D"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/OmniLight3D/OmniLightArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0498, 0)
+shape = SubResource("BoxShape3D_rvye4")
+
+[node name="Trigger2" type="Node3D" parent="omniLightMecanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.19522, 0.901893, -4.44996)
+
+[node name="Sprite3D" type="Sprite3D" parent="omniLightMecanism/Trigger2"]
+transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0.0586803, 0.0162812, -0.116955)
+texture = ExtResource("9_o4bpr")
+hframes = 2
+vframes = 4
+
+[node name="Label3D" type="Label3D" parent="omniLightMecanism/Trigger2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.151045, 0.476392, 0.0820026)
+text = "Presiona X para
+ disminuir intensidad y
+ Z para aumentarla"
+
+[node name="Area3D3" type="Area3D" parent="omniLightMecanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04417, 0.314644, -4.55045)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/Area3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11156, 0.58618, -0.0110664)
+shape = SubResource("BoxShape3D_kqkjb")
+
+[node name="Collectable" parent="." instance=ExtResource("13_7xmxp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 0.62, 0)
+collision_layer = 8
+
+[node name="Collectable2" parent="." instance=ExtResource("13_7xmxp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 0.62, -6.98236)
+collision_layer = 8
+
+[node name="Collectable3" parent="." instance=ExtResource("13_7xmxp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 1.97086, -11.0937)
+collision_layer = 9
+
+[node name="Player" parent="." instance=ExtResource("5_atcrf")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.05, 0.62, -15.771)
+collision_mask = 12
+dyingTime = 3.0
+Jump_Speed = 5.0
+
+[node name="Enemy" parent="." instance=ExtResource("13_70t8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 0.62, -20.9918)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -81.0
+offset_top = 1.0
+offset_right = 70.0
+offset_bottom = 146.0
+grow_horizontal = 0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_s3lo8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k5wr4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_phs1g")
+text = "X"
+
+[node name="FPScounter" parent="." instance=ExtResource("9_3vbba")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_bx5ev")
+
+[node name="Area3D2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.055, 0.699, -20.24)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.357)
+shape = SubResource("BoxShape3D_oohu4")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="spotLightMeacnism/Area3D2" to="Player" method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="spotLightMeacnism/Area3D2" to="Player" method="_on_area_3d_2_body_exited"]
+[connection signal="body_entered" from="spotLightMeacnism/SpotLight3D/LighArea" to="spotLightMeacnism/SpotLight3D" method="_on_ligh_area_body_entered"]
+[connection signal="body_exited" from="spotLightMeacnism/SpotLight3D/LighArea" to="spotLightMeacnism/SpotLight3D" method="_on_ligh_area_body_exited"]
+[connection signal="body_entered" from="omniLightMecanism/OmniLight3D/OmniLightArea" to="omniLightMecanism/OmniLight3D" method="_on_omni_light_area_body_entered"]
+[connection signal="body_exited" from="omniLightMecanism/OmniLight3D/OmniLightArea" to="omniLightMecanism/OmniLight3D" method="_on_omni_light_area_body_exited"]
+[connection signal="body_entered" from="omniLightMecanism/Area3D3" to="Player" method="_on_area_3d_3_body_entered"]
+[connection signal="body_exited" from="omniLightMecanism/Area3D3" to="Player" method="_on_area_3d_3_body_exited"]
+[connection signal="Confirm" from="Player" to="Enemy" method="_on_player_confirm"]
+[connection signal="Freedom" from="Player" to="Enemy" method="_on_player_freedom"]
+[connection signal="Intensity" from="Player" to="spotLightMeacnism/SpotLight3D" method="_on_player_intensity"]
+[connection signal="Intensity" from="Player" to="omniLightMecanism/OmniLight3D" method="_on_player_intensity"]
+[connection signal="LightBend" from="Player" to="." method="_on_player_light_bend"]
+[connection signal="Purify" from="Player" to="Enemy" method="_on_player_purify"]
+[connection signal="Attack" from="Enemy" to="Player" method="_on_enemy_attack"]
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]
+
+[editable path="BlenderImport"]

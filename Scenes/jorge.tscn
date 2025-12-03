@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://crm66syl3si6h"]
+
+[ext_resource type="PackedScene" uid="uid://b281eehjp4h04" path="res://Blender/Jorge.blend" id="1_w44op"]
+
+[node name="Jorge" instance=ExtResource("1_w44op")]
+
+[node name="casa2" parent="." index="5"]
+transform = Transform3D(0, 4.89263, -1.45812e-07, 1.45812e-07, 0, -4.89263, -4.89263, -1.45812e-07, 0, 1.38111, 2.48885, -14.3901)

@@ -1,0 +1,166 @@
+[gd_scene load_steps=11 format=3 uid="uid://dv6b23nj5thwu"]
+
+[ext_resource type="Texture2D" uid="uid://cdwp7ykkkl1b" path="res://icon.svg" id="1_6hh73"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/Control.gd" id="2_ly37q"]
+[ext_resource type="VideoStream" path="res://Assets/Videos/Cinematica.ogv" id="3_kp0yn"]
+[ext_resource type="AudioStream" uid="uid://ds8vhd7x5gmc5" path="res://Assets/Audio/dramatic-piano-and-strings-177000.mp3" id="4_x8sj5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03cqp"]
+bg_color = Color(0.945098, 0.392157, 0.435294, 1)
+border_width_left = 7
+border_color = Color(0.992157, 0.752941, 0.337255, 1)
+corner_detail = 7
+
+[sub_resource type="Theme" id="Theme_cvbxe"]
+/icons/kji = ExtResource("1_6hh73")
+/styles/wedaad = SubResource("StyleBoxFlat_03cqp")
+
+[sub_resource type="Animation" id="Animation_m4b11"]
+resource_name = "Cinematic"
+length = 25.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(24.0128, 25.0631),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dw7kb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:theme_override_constants/shadow_offset_x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+
+[sub_resource type="Animation" id="Animation_pfxl6"]
+resource_name = "creppy title"
+length = 10.0001
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:theme_override_constants/shadow_offset_x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mllah"]
+_data = {
+"Cinematic": SubResource("Animation_m4b11"),
+"RESET": SubResource("Animation_dw7kb"),
+"creppy title": SubResource("Animation_pfxl6")
+}
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_cvbxe")
+script = ExtResource("2_ly37q")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -320.0
+offset_right = 176.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("3_kp0yn")
+autoplay = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(1, 1, 1, 0)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -65.5
+offset_right = 117.0
+offset_bottom = 65.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.521569, 0.65098, 0.984314, 1)
+text = "Nueva Partida"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.521569, 0.65098, 0.984314, 1)
+text = "Salir"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_top = 200.0
+offset_right = 48.0
+offset_bottom = 226.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.94902, 0.439216, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 46
+text = "Not So Dead"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mllah")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_x8sj5")
+
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
