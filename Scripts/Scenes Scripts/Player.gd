@@ -13,7 +13,6 @@ signal Purify(state)
 signal Freedom(myPosition)
 signal LightBend(is_bending)
 signal Confirm(ans,position)
-#signal FollowCamera(confirm)
 
 ##Declaración de variables
 var can_climb         : bool    = false       #Variable para establecer el momento en que la animacion de escalar termina
@@ -38,8 +37,6 @@ const Gravity      = 15 ##Constante para la gravedad
 var Animations : Dictionary = {
 	'Idle':
 		func():
-			#print('idle')
-			#print($Path3D/PathFollow3D.progress_ratio)
 			velocity = Vector3.ZERO
 			$Path3D/PathFollow3D.progress_ratio = 0
 			$Path3D.position = Vector3.ZERO
@@ -79,25 +76,15 @@ var Animations : Dictionary = {
 		func(): 
 			velocity.z = 0
 			playback.travel(ground_motion()),
-			
+	
 	'Subir':
 		func():
 			if can_climb:
 				$Path3D.global_position = path_position
-
-				#print(interp)
-				var error = $Path3D/PathFollow3D.global_position-position
-				#$Path3D/PathFollow3D/Sprite3D.show()
-				storaged_error += error
-				velocity = 6 * error + 0.7 * storaged_error, 
-				#print(storagedError)
-				#print("I'm climbing")
-				#if $Sprite3D.flip_h:
-					#$Sprite3D.scale.x = -0.25
-					#$Sprite3D.flip_h  = false
-				
-				#can_climb = false
-
+				var error               = $Path3D/PathFollow3D.global_position-position
+				storaged_error         += error
+				velocity                = 6 * error + 0.7 * storaged_error, 
+	
 	'Idle_Caminar_Transition':
 		func():
 			velocity.z = -get_axis() * speed * 0.5
@@ -129,16 +116,13 @@ var Animations : Dictionary = {
 	'Being_Absorbed 2':
 		func(): velocity = Vector3.ZERO,
 	
-	#'Levantarse':
-		#func(): velocity = Vector3.ZERO,
-	
 	'Dash':
 		func():
 			playback.travel(ground_motion()),
 
 }
 
-###Inicialización
+##Inicialización
 func _ready() ->void:
 	playback.start("Idle")
 	raycast_target                      = $RayCast3D.target_position.x
@@ -171,10 +155,8 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 			if Input.is_action_pressed("Correr"):
 				if Input.is_action_just_pressed("Dash") && playback.get_current_node()=="Correr":
 					if can_dash:
-						#is_dashing = true
 						var duration = $AnimationPlayer.get_animation("Dash").length
 						tweenFunc(1,position.z,duration)
-						#emit_signal("FollowCamera",false)
 						return "Dash"
 				
 				return "Correr"
@@ -220,7 +202,6 @@ func climb() ->void: ##Función para habilitar que el personaje escale
 ##Buscar una manera de corregir esto de mejor manera
 func physics(frame) ->void: 
 	if(velocity.x != 0):
-		#print("Here?")
 		set_velocity(Vector3(0,-Gravity*frame,0))
 	if(position.x !=2.05): position.x = 2.05
 
@@ -249,7 +230,6 @@ func impulse(to_speed:float, time:float, displacement:float) ->float:
 
 func jump_modulator(frame) ->void:
 	if playback.get_current_node() != "Subir":
-		#print("Hey i'm here")
 		if !is_on_floor():
 			if !Input.is_action_pressed("ui_accept"): velocity.y -= Gravity/2 * 1.5  * frame
 			else: velocity.y -= Gravity/2 * frame
@@ -268,7 +248,6 @@ func light_bend():
 func release():
 	if Input.is_action_just_pressed("Liberarse"):
 		is_being_absorbed                                  = false
-		#position.z                                        += 1 if position.z > enemyNear.z else -1
 		interp                                              = 0.0
 		playback.travel("Idle")
 		$DyingTime.stop()
@@ -279,7 +258,6 @@ func motion(delta):
 		state_machine(Animations)
 		if !is_being_absorbed: jump_modulator(delta)
 		if playback.get_current_node() != "Dash": 
-			#print("I'moving")
 			move_and_slide()
 			flip_h_player()
 		if !is_being_absorbed: jump_modulator(delta)
@@ -310,17 +288,10 @@ func curveFuncY(t,distance,from):
 
 func curveFuncT(progRatio,t):
 	$Path3D/PathFollow3D.progress_ratio = lerp(0.0,1.0,curveClimb.sample(t))
-	print(progRatio,",",curveClimb.sample(t))
+
 
 ##Bucle jugable
 func _physics_process(delta) ->void:
-	#print($Path3D.scale)
-	#print($Path3D.position)
-	#print($Path3D/PathFollow3D.progress_ratio)
-	#print($CollisionShape3D.disabled)
-	#print(playback.get_current_node())
-	#print(velocity)
-	#print(position)
 	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
 	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start")
 	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
@@ -337,7 +308,6 @@ func _physics_process(delta) ->void:
 ##Eventos 
 func endDashing():
 	is_dashing = false
-	#emit_signal("FollowCamera",true)
 	$Cooldown.start()
 	can_dash = false
 
@@ -381,5 +351,3 @@ func start_dashing():
 func end_climbing():
 	$CollisionShape3D.disabled = false
 	$RayCast3D.enabled = true
-	#$Path3D/PathFollow3D.progress_ratio = 0
-
