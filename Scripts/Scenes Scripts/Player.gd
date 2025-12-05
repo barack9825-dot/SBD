@@ -17,6 +17,7 @@ signal Confirm(ans,position)
 ##Declaración de variables
 var can_climb         : bool    = false       #Variable para establecer el momento en que la animacion de escalar termina
 var can_dash          : bool    = true        #Variable para establecer el momento del esquive   
+var can_release       : bool    = true        #Variable para poder liberarse del agarre
 var is_being_absorbed : bool    = false       #Variable para saber si esta siendo purificado
 var is_dashing        : bool    = false       #Variable para saber si esta esquivando
 var is_in_area        : bool    = false       #Variable para detectar si esta en el area de encendido y apagado
@@ -297,7 +298,7 @@ func _physics_process(delta) ->void:
 	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
 	if Input.is_action_just_released("Purificar") && near_enemy: emit_signal("Purify","interrupt")
 	
-	if is_being_absorbed:
+	if is_being_absorbed && can_release:
 		release()
 	
 	light_bend()
@@ -351,3 +352,6 @@ func start_dashing():
 func end_climbing():
 	$CollisionShape3D.disabled = false
 	$RayCast3D.enabled = true
+
+func gameOver():
+	can_release = false
