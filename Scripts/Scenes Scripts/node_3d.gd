@@ -1,12 +1,11 @@
 extends Node3D
+
 @onready var light_rotation = $spotLightMeacnism/SpotLight3D.rotation
 @onready var spot_light     = $spotLightMeacnism/SpotLight3D
 
-#signal enemySpotted
-#signal absorvingTime
-
-var activate_bend :bool  = false
-var interpolate   :float = 0.0
+##Variables
+var activate_bend :bool  = false ##Para activar el control de las luces del escenario
+var interpolate   :float = 0.0   ##Variable de interpolación para algunas transcisiones
 
 
 ##Inicialización
@@ -17,8 +16,6 @@ func _ready():
 
 ##Bucle jugable
 func _process(delta):
-	#print($Player.position.z-$Enemy.position.z)
-	#print(activate_bend)
 	#RenderingServer.global_shader_parater_set("player_pos",$Enemy.position)
 	if activate_bend:
 		var playerCloseness = $Player.global_position.distance_to(spot_light.global_position)
@@ -45,9 +42,3 @@ func _on_area_3d_2_body_exited(body):
 	if body.has_method('turn'): body.turn()
 
 func _on_player_light_bend(is_bending): activate_bend = is_bending
-
-
-
-#func _on_enemy_player_spotted(myself):
-	#if abs(myself.position.z - $Player.position.z) < 0.7:
-		#emit_signal("enemyspotted")
