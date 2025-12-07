@@ -1,33 +1,33 @@
 extends Character
 ##Declaración de variables
-@onready var Left       :RayCast3D = $RayCastLeft   #Raycast de la izquierda para detectar enemigos a la izquiera
-@onready var Right      :RayCast3D = $RayCastRight  #Raycast de la izquierda para detectar enemigos a la derecha
-@export  var acel       :float     = 0.1            #Aceleración
-@export  var topSpeed   :int       = 2              #Velocidad Máxima
+@onready var Left       :RayCast3D = $RayCastLeft   ##Raycast de la izquierda para detectar enemigos a la izquiera
+@onready var Right      :RayCast3D = $RayCastRight  ##Raycast de la izquierda para detectar enemigos a la derecha
+@export  var acel       :float     = 0.1            ##Aceleración
+@export  var topSpeed   :int       = 2              ##Velocidad Máxima
 @export  var dying_time :float     = 5.0    
 @export  var range      :float     = 0.5
 
 signal Attack(myPosition)
 
 
-var darkness            :bool  = false #Para detectar intensidad de la luz
-var can_grab            :bool  = false #Para permitir al enemigo agarrar
-var has_player          :bool  = false #Para detectar si el jugador está en su rango 
-var is_atacking         :bool  = false #Para reflejar el estado de atacando
-var is_being_puryfied   :bool  = false #Para cuando lo purifican
-var is_being_pushed     :bool  = false #Para cuando lo están pruficando
-var is_dashing          :bool  = false #Para cuando esta esquivando
-var is_have_been_pushed :bool  = false #Para cuando lo han empujado
-var is_in_area          :bool  = false #Para detectar la luz
-var is_absorving        :bool  = false #Para reflejar el estado de absorviendo
-var is_missing          :bool  = false #Para reflejar el estado de fallando el ataque
-var player_spotted      :bool  = false #Para recordar la posición del jugado
-var area3Dposition      :float         #Para detectar al jugador
-var playerPosition      :float         #Para guardar la posición del jugador
-var progressBarValue    :float = 0     #Para cambiar el valor de la barra de progreso
-var interpValue         :float = 0.0   #Valor para desacelerar cuando se ataca
-var speedRun            :float = 1    #Velocidad de correr
-var speedWalk           :float = 0.5    #Velocidad al caminar
+var darkness            :bool  = false ##Para detectar intensidad de la luz
+var can_grab            :bool  = false ##Para permitir al enemigo agarrar
+var has_player          :bool  = false ##Para detectar si el jugador está en su rango 
+var is_atacking         :bool  = false ##Para reflejar el estado de atacando
+var is_being_puryfied   :bool  = false ##Para cuando lo purifican
+var is_being_pushed     :bool  = false ##Para cuando lo están pruficando
+var is_dashing          :bool  = false ##Para cuando esta esquivando
+var is_have_been_pushed :bool  = false ##Para cuando lo han empujado
+var is_in_area          :bool  = false ##Para detectar la luz
+var is_absorving        :bool  = false ##Para reflejar el estado de absorviendo
+var is_missing          :bool  = false ##Para reflejar el estado de fallando el ataque
+var player_spotted      :bool  = false ##Para recordar la posición del jugado
+var area3Dposition      :float         ##Para detectar al jugador
+var playerPosition      :float         ##Para guardar la posición del jugador
+var progressBarValue    :float = 0     ##Para cambiar el valor de la barra de progreso
+var interpValue         :float = 0.0   ##Valor para desacelerar cuando se ataca
+var speedRun            :float = 1    ##Velocidad de correr
+var speedWalk           :float = 0.5    ##Velocidad al caminar
 var Light
 var SelectedRaycast           :RayCast3D
 
@@ -63,7 +63,7 @@ var Animations :Dictionary = {
 		func():
 			velocity.z  = lerp(speedRun * get_physics_process_delta_time() * axis, 0.0, interpValue)
 			interpValue = clampf(interpValue + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0),
-			#El hitbox es 0.72 en z para absorving1
+			##El hitbox es 0.72 en z para absorving1
 	
 	'Absorving_Individual':
 		func(): velocity.z = 0,
@@ -84,7 +84,6 @@ var Animations :Dictionary = {
 	
 	'Been_Pushed':
 		func():
-			#velocity.z = 3 * speedRun * (1 if $Sprite3D.flip_h else -1)
 			velocity.z = lerp(3 * speedRun * (1 if $Sprite3D.flip_h else -1),0.0,interpValue)
 			interpValue = clampf(interpValue + 1/$AnimationPlayer.get_animation("Been_Pushed").length * get_physics_process_delta_time(),0,1),
 	
@@ -118,16 +117,12 @@ func get_colissions( Raycast:RayCast3D ) ->bool:
 		var col = Raycast.get_collider()
 		if col.is_in_group("Player"): 
 			SelectedRaycast = Raycast
-			#player_spotted = true
+
 			return true
 		else: 
-			#if $MemoryTimer.is_stopped() && player_spotted: 
-				#$MemoryTimer.start()
 			return false
 
 	else: 
-		#if $MemoryTimer.is_stopped() && player_spotted: 
-			#$MemoryTimer.start()
 		return false
 
 func Behavior():
@@ -141,7 +136,7 @@ func Behavior():
 	playerPosition = col.position.z
 	
 	
-	if  distance < 1: #&& distance > 0.3:
+	if  distance < 1: 
 		playback.travel("Atack_2")
 
 		axis   = SelectedRaycast.target_position.z / abs(SelectedRaycast.target_position.z) 
@@ -178,15 +173,12 @@ func movement(frame):
 	
 	elif (detect_colissions()):
 		if !is_atacking:Behavior()
-		else: 
-			#playback.travel("Atack_2")
-			AttackBehavior()
+		else: AttackBehavior()
 	
 	else: 
 		if $MemoryTimer.is_stopped() && player_spotted: 
 			$MemoryTimer.start()
 		playback.travel("Correr" if player_spotted else "Caminar")
-		#is_atacking = false
 	state_machine(Animations)
 	
 	if playback.get_current_node() != "Fail_Atack" :flip_h()
@@ -273,13 +265,11 @@ func _on_player_freedom(playerPosition):
 	is_atacking  = false
 	is_absorving = false
 	is_have_been_pushed = true
-	#$Sprite3D.set_offset(Vector2.ZERO)
 
 func turn(): axis *= -1
 
 func _on_player_confirm(ans,Playerposition): 
 	is_absorving = ans
-	#if(Playerposition):axis = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
 	axis = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
 
 func _on_dyng_timer_timeout():queue_free()
