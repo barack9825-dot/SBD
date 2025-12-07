@@ -1090,6 +1090,7 @@ range = 13.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(-1.09278e-08, 0, 0.25, 0, 0.25, 0, -0.25, 0, -1.09278e-08, 0, 0, 0)
+shaded = true
 texture = ExtResource("2_scgni")
 hframes = 4
 vframes = 4
