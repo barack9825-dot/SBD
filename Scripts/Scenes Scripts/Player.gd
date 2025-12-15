@@ -179,8 +179,8 @@ func air_motion() ->String: ##Función para establecer las condiciones en las an
 	if $RayCast3D.is_colliding():
 		var col = $RayCast3D.get_collider()
 		if col.is_in_group("Plataforma"):
-			$RayCast3D.enabled = false
-			path_position      = $Path3D.global_position
+			$RayCast3D.enabled         = false
+			path_position              = $Path3D.global_position
 			$CollisionShape3D.disabled = true
 			tweenFuncT($Path3D/PathFollow3D.progress_ratio,$AnimationPlayer.get_animation("Subir").length)
 			return "Subir"
@@ -204,14 +204,14 @@ func climb() ->void: ##Función para habilitar que el personaje escale
 func physics(frame) ->void: 
 	if(velocity.x != 0):
 		set_velocity(Vector3(0,-Gravity*frame,0))
-	if(position.x !=2.05): position.x = 2.05
+	if(position.x != 2.05): position.x = 2.05
 
 func flip_h_player() ->void: ##Función para voltear el Sprite en la dirección correcta
 	if !["Subir","Being_Absorved","Being_Absorved2","Dash_2","Caminar_Idle_Transition"].has(playback.get_current_node()): flip_h()
 	
 	if is_being_absorbed:
-		var distance =position.z-enemyNear.z
-		axis = distance/abs(distance)
+		var distance = position.z-enemyNear.z
+		axis         = distance/abs(distance)
 
 func updatePosAfterClimb() ->void: ##Función que se encarga de establecer la posicion del nodo al terminar la animacion de subir en función de el offset del Sprite
 	##Se establece la nueva posición del nodo

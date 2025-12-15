@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://cl6uvqgumv42v"]
+[gd_scene load_steps=82 format=3 uid="uid://cl6uvqgumv42v"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes Scripts/Enemy.gd" id="1_7aeyp"]
 [ext_resource type="Texture2D" uid="uid://dbvsm2be0hkit" path="res://Assets/SpriteSheet/Idle SpriteSheet.png" id="2_scgni"]
@@ -13,6 +13,15 @@
 [ext_resource type="Texture2D" uid="uid://u8gkg6pgmxya" path="res://Assets/SpriteSheet/Enemigo/Ataque fallo transicion.png" id="9_nj1qa"]
 [ext_resource type="Texture2D" uid="uid://b44p0j3ybnb5m" path="res://Assets/SpriteSheet/SpriteSheet Enemigo Agarre.png" id="10_drqhd"]
 [ext_resource type="Texture2D" uid="uid://cbfd6symjuaw6" path="res://Assets/SpriteSheet/Enemigo/Enemigo spritesheet recuperarse.png" id="13_f6krt"]
+
+[sub_resource type="Curve" id="Curve_6w2vd"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_a8wea"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qs3sc"]
 radius = 0.233425
@@ -405,7 +414,7 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_8p221"]
 resource_name = "Been_Pushed"
-length = 0.5
+length = 0.15
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -461,7 +470,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0.5, 2, 2.0001),
+"times": PackedFloat32Array(0.15, 2, 2.0001),
 "transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [],
@@ -1085,6 +1094,8 @@ size = Vector3(0.204102, 0.2229, 0.249023)
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_7aeyp")
+curve_rejected = SubResource("Curve_6w2vd")
+curve_recover = SubResource("Curve_a8wea")
 acel = 0.01
 
 [node name="Sprite3D" type="Sprite3D" parent="."]

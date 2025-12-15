@@ -2,14 +2,15 @@ extends Character
 
 
 ##Declaración de variables exportables
-@export  var curveRejected :Curve     = Curve.new()    ##Curva para la velocidad de impulso cuando es rechazado
-@export  var acel          :float     = 0.1            ##Aceleración
-@export  var dying_time    :float     = 5.0            ##Tiempo de duración de la purificación 
-@export  var topSpeed      :int       = 2              ##Velocidad Máxima
+@export  var curve_rejected :Curve     = Curve.new()    ##Curva para la velocidad de impulso cuando es rechazado
+@export  var curve_recover  :Curve     = Curve.new()    ##Curva para la velocidad de impulso cuando se recuppera
+@export  var acel           :float     = 0.1            ##Aceleración
+@export  var dying_time     :float     = 5.0            ##Tiempo de duración de la purificación 
+@export  var top_speed      :int       = 2              ##Velocidad Máxima
 
 ##Declaración de variables precargadas
-@onready var Left          :RayCast3D = $RayCastLeft   ##Raycast de la izquierda para detectar enemigos a la izquiera
-@onready var Right         :RayCast3D = $RayCastRight  ##Raycast de la izquierda para detectar enemigos a la derecha
+@onready var left          :RayCast3D = $RayCastLeft   ##Raycast de la izquierda para detectar enemigos a la izquiera
+@onready var right         :RayCast3D = $RayCastRight  ##Raycast de la izquierda para detectar enemigos a la derecha
 
 ##señales
 signal Attack(myPosition)
@@ -19,22 +20,23 @@ var darkness            :bool  = false ##Para detectar intensidad de la luz
 var can_grab            :bool  = false ##Para permitir al enemigo agarrar
 var has_player          :bool  = false ##Para detectar si el jugador está en su rango 
 var is_atacking         :bool  = false ##Para reflejar el estado de atacando
+var is_absorving        :bool  = false ##Para reflejar el estado de absorviendo
 var is_being_puryfied   :bool  = false ##Para cuando lo purifican
 var is_being_pushed     :bool  = false ##Para cuando lo están pruficando
 var is_dashing          :bool  = false ##Para cuando esta esquivando
 var is_have_been_pushed :bool  = false ##Para cuando lo han empujado
 var is_in_area          :bool  = false ##Para detectar la luz
-var is_absorving        :bool  = false ##Para reflejar el estado de absorviendo
 var is_missing          :bool  = false ##Para reflejar el estado de fallando el ataque
+var is_recovering       :bool  = false ##Para reflejar el estado de recuperación
 var player_spotted      :bool  = false ##Para recordar la posición del jugado
-var area3Dposition      :float         ##Para detectar al jugador
-var playerPosition      :float         ##Para guardar la posición del jugador
-var progressBarValue    :float = 0     ##Para cambiar el valor de la barra de progreso
-var interpValue         :float = 0.0   ##Valor para desacelerar cuando se ataca
-var speedRun            :float = 1     ##Velocidad de correr
-var speedWalk           :float = 0.5   ##Velocidad al caminar
-var SelectedRaycast     :RayCast3D
-var Light
+var area_3D_position    :float         ##Para detectar al jugador
+var player_position     :float         ##Para guardar la posición del jugador
+var progress_bar_value  :float = 0     ##Para cambiar el valor de la barra de progreso
+var interp_value        :float = 0.0   ##Valor para desacelerar cuando se ataca
+var speed_run           :float = 1     ##Velocidad de correr
+var speed_walk          :float = 0.5   ##Velocidad al caminar
+var selected_raycast    :RayCast3D
+var light
 
 
 ##Constantes
@@ -44,30 +46,32 @@ const Gravity :float = 15
 ##Animaciones
 var Animations :Dictionary = {
 	'Idle':
-		func(): velocity.z = 0,
+		func(): 
+			velocity.z    = 0
+			is_recovering = true,
 	
 	'Caminar':
-		func(): velocity.z = speedWalk * axis,
+		func(): velocity.z = speed_walk * axis,
 	
 	'Correr':
-		func(): velocity.z = speedRun * axis,
+		func(): velocity.z = speed_run * axis,
 	
 	'Atack':
-		func():velocity.z = speedRun * axis,
+		func():velocity.z = speed_run * axis,
 	
 	'Atack_2':
-		func():velocity.z = speedRun * 2 * axis,
+		func():velocity.z = speed_run * 2 * axis,
 	
 	'Absorving':
 		func():
-			velocity.z         = lerp(speedRun * get_physics_process_delta_time() * axis, 0.0, interpValue)
-			interpValue        = clampf(interpValue + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0)
+			velocity.z         = lerp(speed_run * get_physics_process_delta_time() * axis, 0.0, interp_value)
+			interp_value       = clampf(interp_value + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0)
 			$Sprite3D.offset.x = 100.0 if $Sprite3D.flip_h else -100.0,
 	
 	'Absorving2':
 		func():
-			velocity.z  = lerp(speedRun * get_physics_process_delta_time() * axis, 0.0, interpValue)
-			interpValue = clampf(interpValue + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0),
+			velocity.z  = lerp(speed_run * get_physics_process_delta_time() * axis, 0.0, interp_value)
+			interp_value = clampf(interp_value + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0),
 			##El hitbox es 0.72 en z para absorving1
 	
 	'Absorving_Individual':
@@ -78,8 +82,8 @@ var Animations :Dictionary = {
 	
 	'BackDash':
 		func():
-			velocity.z  = lerp(speedRun *-axis * 5,0.0,interpValue)
-			interpValue = clampf(interpValue + 1/$AnimationPlayer.get_animation("BackDash").length * get_physics_process_delta_time(),0,1),
+			velocity.z  = lerp(speed_run *-axis * 5,0.0,interp_value)
+			interp_value = clampf(interp_value + 1/$AnimationPlayer.get_animation("BackDash").length * get_physics_process_delta_time(),0,1),
 
 	'Being_Pushed':
 		func():
@@ -87,14 +91,16 @@ var Animations :Dictionary = {
 			var anim = $AnimationPlayer.get_animation("Being_Pushed")
 			anim.track_set_key_value(5, 0, Vector2(-axis * 118, 0)), 
 	
-	'Been_Pushed':
-		func():
-			velocity.z  = lerp(3 * speedRun * (1 if $Sprite3D.flip_h else -1),0.0,interpValue)
-			interpValue = clampf(interpValue + 1/$AnimationPlayer.get_animation("Been_Pushed").length * get_physics_process_delta_time(),0,1),
+	#'Been_Pushed':
+		#func():
+			#velocity.z  = lerp(3 * speed_run * (1 if $Sprite3D.flip_h else -1),0.0,interp_value)
+			#interp_value = clampf(interp_value + 1/$AnimationPlayer.get_animation("Been_Pushed").length * get_physics_process_delta_time(),0,1),
 	
 	'Recover':
 		func():
-			velocity = Vector3.ZERO
+			if !is_recovering:tween_func(0.25,0.0,$AnimationPlayer.get_animation("Recover").length,curve_recover)
+			is_recovering = true
+			print(velocity.z)
 }
 
 
@@ -108,40 +114,40 @@ func _ready():
 
 ##Funciones del Bucle Jugable
 func attack_behavior():
-	var col      = SelectedRaycast.get_collider()
+	var col      = selected_raycast.get_collider()
 	var distance = position.z-col.position.z
 	
 	if abs(distance) <= 0.3 && distance/axis < 0 && !is_dashing:
 		if !playback.get_current_node() == "BackDash" && col.is_on_floor():
 			emit_signal("Attack",position)
-	playerPosition = col.position.z
+	player_position = col.position.z
 
 func behavior():
-	var col = SelectedRaycast.get_collider()
+	var col = selected_raycast.get_collider()
 	
 	## Para virarse en la dirección del jugador
 	if playback.get_current_node() != "Atack_2" && playback.get_current_node() != "Fail_Atack":
-			axis   = SelectedRaycast.target_position.z / abs(SelectedRaycast.target_position.z) 
+			axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 	
 	var distance   = abs(position.z - col.position.z)
-	playerPosition = col.position.z
+	player_position = col.position.z
 	
 	if  distance < 1: 
 		playback.travel("Atack_2")
 		
-		axis        = SelectedRaycast.target_position.z / abs(SelectedRaycast.target_position.z) 
+		axis        = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 		is_atacking = true
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
 	if is_being_puryfied:
 		$Sprite_Progress_Bar.visible                        = true
-		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progressBarValue)
-		progressBarValue                                   += 1/dying_time * delta 
+		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
+		progress_bar_value                                 += 1/dying_time * delta 
 	
 	else:
 		$Sprite_Progress_Bar.visible                       = false
-		progressBarValue                                   = 0
+		progress_bar_value                                 = 0
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
 
 func blind_spot() ->void:
@@ -154,22 +160,22 @@ func blind_spot() ->void:
 
 func checkPlayer() ->void:
 	if player_spotted:
-		var distance = abs(position.z - playerPosition)
-		if distance > 5: axis = -(position.z-playerPosition)/abs(position.z - playerPosition)
+		var distance = abs(position.z - player_position)
+		if distance > 5: axis = -(position.z-player_position)/abs(position.z - player_position)
 
 func detect_colissions() ->bool:
-	if get_colissions(Left) ||  get_colissions(Right):
+	if get_colissions(left) ||  get_colissions(right):
 		player_spotted = true
 		return true
 	else:
-		SelectedRaycast = null
+		selected_raycast = null
 		return false
 
 func get_colissions( Raycast:RayCast3D ) ->bool:
 	if Raycast.is_colliding():
 		var col = Raycast.get_collider()
 		if col.is_in_group("Player"): 
-			SelectedRaycast = Raycast
+			selected_raycast = Raycast
 			return true
 		else: 
 			return false
@@ -185,15 +191,17 @@ func movement(frame):
 	move_and_slide()
 	
 	if is_dashing: playback.travel("BackDash")
-	
-	elif is_being_pushed && is_have_been_pushed: playback.travel("Been_Pushed")
-	
+	elif is_being_pushed && is_have_been_pushed: 
+		playback.travel("Been_Pushed")
+		
+		tween_func(speed_run*3,0.25,$AnimationPlayer.get_animation("Been_Pushed").length,curve_rejected)
+
 	elif is_have_been_pushed: playback.travel("Being_Pushed")
 	
 	elif is_absorving:
 		if (detect_colissions()):
-			playerPosition = SelectedRaycast.get_collider().position.z
-			axis           = (playerPosition-position.z)/abs(playerPosition-position.z)
+			player_position = selected_raycast.get_collider().position.z
+			axis           = (player_position-position.z)/abs(player_position-position.z)
 		
 		playback.travel("Absorving_Individual")
 	
@@ -213,9 +221,15 @@ func movement(frame):
 	
 	if playback.get_current_node() != "Fail_Atack" :flip_h()
 
+func tween_func(top_speed,bottom_speed,duration,curve):
+	var tween = create_tween()
+	
+	tween.tween_method(func(interp_value):curve_func_tween(interp_value,top_speed,bottom_speed,curve),0.0,1.0,duration)
+
+
 ##Bucle Jugable
 func _process(delta):
-	if is_in_area: darkness = Light.light_energy <= 1.8
+	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
 	being_purified(delta)
@@ -229,30 +243,17 @@ func _process(delta):
 
 
 ##Eventos
-func end_been_pushed():
-	is_being_pushed     = false
-	is_have_been_pushed = false
-	interpValue         = 0
-
-func end_dashing():
-	is_dashing  = false
-	interpValue = 0
-
 func enter_light_area(light:SpotLight3D):
 	is_in_area   = true
-	Light        = light
+	light        = light
 
 func enter_omni_light_area(light:OmniLight3D):
 	is_in_area = true
-	Light      = light
+	light      = light
 
 func exit_light_area(): is_in_area = false
 
 func exit_omni_light_area(): is_in_area = false
-
-func miss():
-	is_missing  = true
-	is_atacking = false
 
 func _on_dying_timer_timeout():queue_free()
 
@@ -263,7 +264,7 @@ func _on_player_confirm(ans,Playerposition):
 	is_absorving = ans
 	axis         = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
 
-func _on_player_freedom(playerPosition):
+func _on_player_freedom(player_position):
 	is_atacking         = false
 	is_absorving        = false
 	is_have_been_pushed = true
@@ -290,16 +291,30 @@ func _on_top_detector_body_entered(body):
 		else:
 			emit_signal("Attack",position)
 
+
+##Funciones auxiliares
+func curve_func_tween(t,top_speed,bottom_speed,curve):
+	var direction = 1 if $Sprite3D.flip_h else -1
+	velocity.z = direction * lerp(top_speed,bottom_speed,curve_rejected.sample(t))
+
+func end_been_pushed():
+	is_being_pushed     = false
+	is_have_been_pushed = false
+	interp_value         = 0
+
+func end_dashing():
+	is_dashing  = false
+	interp_value = 0
+
+func miss():
+	is_missing  = true
+	is_atacking = false
+
 func recover(): is_missing = false
 
 func startBeingPushed(): is_being_pushed = true
 
 func turn(): axis *= -1
-
-
-
-
-
 
 
 
