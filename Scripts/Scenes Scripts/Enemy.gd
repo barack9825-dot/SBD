@@ -70,7 +70,7 @@ var Animations :Dictionary = {
 	
 	'Absorving2':
 		func():
-			velocity.z  = lerp(speed_run * get_physics_process_delta_time() * axis, 0.0, interp_value)
+			velocity.z   = lerp(speed_run * get_physics_process_delta_time() * axis, 0.0, interp_value)
 			interp_value = clampf(interp_value + 2.0/1.0 * get_physics_process_delta_time(), 0.0, 1.0),
 			##El hitbox es 0.72 en z para absorving1
 	
@@ -82,7 +82,7 @@ var Animations :Dictionary = {
 	
 	'BackDash':
 		func():
-			velocity.z  = lerp(speed_run *-axis * 5,0.0,interp_value)
+			velocity.z   = lerp(speed_run *-axis * 5,0.0,interp_value)
 			interp_value = clampf(interp_value + 1/$AnimationPlayer.get_animation("BackDash").length * get_physics_process_delta_time(),0,1),
 
 	'Being_Pushed':
@@ -91,16 +91,10 @@ var Animations :Dictionary = {
 			var anim = $AnimationPlayer.get_animation("Being_Pushed")
 			anim.track_set_key_value(5, 0, Vector2(-axis * 118, 0)), 
 	
-	#'Been_Pushed':
-		#func():
-			#velocity.z  = lerp(3 * speed_run * (1 if $Sprite3D.flip_h else -1),0.0,interp_value)
-			#interp_value = clampf(interp_value + 1/$AnimationPlayer.get_animation("Been_Pushed").length * get_physics_process_delta_time(),0,1),
-	
 	'Recover':
 		func():
 			if !is_recovering:tween_func(0.25,0.0,$AnimationPlayer.get_animation("Recover").length,curve_recover)
 			is_recovering = true
-			print(velocity.z)
 }
 
 
@@ -115,21 +109,18 @@ func _ready():
 ##Funciones del Bucle Jugable
 func attack_behavior():
 	var col      = selected_raycast.get_collider()
-	var distance = position.z-col.position.z
+	var distance = position.z - col.position.z
 	
 	if abs(distance) <= 0.3 && distance/axis < 0 && !is_dashing:
-		if !playback.get_current_node() == "BackDash" && col.is_on_floor():
-			emit_signal("Attack",position)
+		if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
+
 	player_position = col.position.z
 
 func behavior():
 	var col = selected_raycast.get_collider()
-	
 	## Para virarse en la dirección del jugador
-	if playback.get_current_node() != "Atack_2" && playback.get_current_node() != "Fail_Atack":
-			axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
-	
-	var distance   = abs(position.z - col.position.z)
+	if playback.get_current_node() != "Atack_2" && playback.get_current_node() != "Fail_Atack": axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
+	var distance    = abs(position.z - col.position.z)
 	player_position = col.position.z
 	
 	if  distance < 1: 
@@ -201,7 +192,7 @@ func movement(frame):
 	elif is_absorving:
 		if (detect_colissions()):
 			player_position = selected_raycast.get_collider().position.z
-			axis           = (player_position-position.z)/abs(player_position-position.z)
+			axis            = (player_position-position.z)/abs(player_position-position.z)
 		
 		playback.travel("Absorving_Individual")
 	
@@ -286,7 +277,7 @@ func _on_top_detector_body_entered(body):
 		var angle = rad_to_deg(atan2(body.velocity.y,body.velocity.z))
 		
 		if (angle < -110 && angle > -120) || (angle < -60 && angle > -70):
-			is_dashing = true
+			is_dashing  = true
 			is_atacking = false
 		else:
 			emit_signal("Attack",position)
@@ -295,15 +286,15 @@ func _on_top_detector_body_entered(body):
 ##Funciones auxiliares
 func curve_func_tween(t,top_speed,bottom_speed,curve):
 	var direction = 1 if $Sprite3D.flip_h else -1
-	velocity.z = direction * lerp(top_speed,bottom_speed,curve_rejected.sample(t))
+	velocity.z    = direction * lerp(top_speed,bottom_speed,curve_rejected.sample(t))
 
 func end_been_pushed():
 	is_being_pushed     = false
 	is_have_been_pushed = false
-	interp_value         = 0
+	interp_value        = 0
 
 func end_dashing():
-	is_dashing  = false
+	is_dashing   = false
 	interp_value = 0
 
 func miss():

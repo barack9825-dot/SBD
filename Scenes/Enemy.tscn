@@ -486,8 +486,8 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_7fvmr"]
 resource_name = "Being_Pushed"
-length = 0.784103
-step = 0.0340913
+length = 0.575002
+step = 0.025
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -524,43 +524,43 @@ tracks/2/keys = {
 "update": 1,
 "values": [6]
 }
-tracks/3/type = "value"
+tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite3D:frame")
+tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0340913, 0.0681826, 0.102274, 0.136365, 0.170456, 0.204548, 0.238639, 0.27273, 0.306822, 0.340913, 0.375004, 0.409096, 0.443187, 0.477278, 0.511369, 0.545461, 0.579552, 0.613643, 0.647735, 0.681826, 0.715917, 0.750009),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.7841),
+"times": PackedFloat32Array(0.575),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"startBeingPushed"
 }]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite3D:offset")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite3D:offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-118, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite3D:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5, 0.525, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 }
 
 [sub_resource type="Animation" id="Animation_3e6vg"]
@@ -1076,7 +1076,7 @@ states/Idle/position = Vector2(395, 100)
 states/Recover/node = SubResource("AnimationNodeAnimation_pj57i")
 states/Recover/position = Vector2(50.9039, -76.6147)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_cfrsd"), "Idle", "Atack", SubResource("AnimationNodeStateMachineTransition_4vb7f"), "Idle", "Correr", SubResource("AnimationNodeStateMachineTransition_jps2l"), "Correr", "Idle", SubResource("AnimationNodeStateMachineTransition_l4gll"), "Idle", "Caminar", SubResource("AnimationNodeStateMachineTransition_bf8qx"), "Caminar", "Idle", SubResource("AnimationNodeStateMachineTransition_57wqh"), "Caminar", "Correr", SubResource("AnimationNodeStateMachineTransition_2upu8"), "Correr", "Caminar", SubResource("AnimationNodeStateMachineTransition_75s7q"), "Atack", "Absorving", SubResource("AnimationNodeStateMachineTransition_6712a"), "Atack", "Absorving2", SubResource("AnimationNodeStateMachineTransition_7qwtx"), "Absorving", "Idle", SubResource("AnimationNodeStateMachineTransition_ep3vc"), "Absorving2", "Idle", SubResource("AnimationNodeStateMachineTransition_q3422"), "Atack", "Absorving_Individual", SubResource("AnimationNodeStateMachineTransition_fath5"), "Fail_Atack", "Idle", SubResource("AnimationNodeStateMachineTransition_kfb5t"), "Atack", "Fail_Atack", SubResource("AnimationNodeStateMachineTransition_52o17"), "Idle", "Atack_2", SubResource("AnimationNodeStateMachineTransition_tq2rm"), "Atack_2", "Absorving", SubResource("AnimationNodeStateMachineTransition_ay74b"), "Atack_2", "Absorving_Individual", SubResource("AnimationNodeStateMachineTransition_lid0m"), "Atack_2", "Absorving2", SubResource("AnimationNodeStateMachineTransition_wv4ud"), "Atack_2", "Fail_Atack", SubResource("AnimationNodeStateMachineTransition_dkr7a"), "Fail_Atack", "Correr", SubResource("AnimationNodeStateMachineTransition_uq8iu"), "Idle", "BackDash", SubResource("AnimationNodeStateMachineTransition_xco3c"), "Correr", "BackDash", SubResource("AnimationNodeStateMachineTransition_r0xna"), "Caminar", "BackDash", SubResource("AnimationNodeStateMachineTransition_7xj6q"), "Fail_Atack", "BackDash", SubResource("AnimationNodeStateMachineTransition_cv7j1"), "BackDash", "Idle", SubResource("AnimationNodeStateMachineTransition_3q61p"), "Atack_2", "BackDash", SubResource("AnimationNodeStateMachineTransition_gcfpr"), "Absorving_Individual", "Being_Pushed", SubResource("AnimationNodeStateMachineTransition_pcnfn"), "Being_Pushed", "Been_Pushed", SubResource("AnimationNodeStateMachineTransition_kebu5"), "Been_Pushed", "Recover", SubResource("AnimationNodeStateMachineTransition_xrcrs"), "Recover", "Idle", SubResource("AnimationNodeStateMachineTransition_i1t86")]
-graph_offset = Vector2(-85.0961, -199.577)
+graph_offset = Vector2(-85.0961, -347.947)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_2qfnn"]
 viewport_path = NodePath("Sprite_Progress_Bar/SubViewport")
