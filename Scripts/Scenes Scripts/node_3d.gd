@@ -24,7 +24,7 @@ func _process(delta):
 				spot_light.rotation,spot_light.look_at($Player.global_position,Vector3.UP)
 				,interpolate
 				)
-			interpolate        += 4 * get_process_delta_time()
+			interpolate += 4 * get_process_delta_time()
 	
 	else: spot_light.rotation = light_rotation
 

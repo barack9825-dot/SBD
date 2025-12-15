@@ -185,7 +185,7 @@ func movement(frame):
 	elif is_being_pushed && is_have_been_pushed: 
 		playback.travel("Been_Pushed")
 		
-		tween_func(speed_run*3,0.25,$AnimationPlayer.get_animation("Been_Pushed").length,curve_rejected)
+		tween_func(speed_run * 3,0.25,$AnimationPlayer.get_animation("Been_Pushed").length,curve_rejected)
 
 	elif is_have_been_pushed: playback.travel("Being_Pushed")
 	
@@ -234,9 +234,9 @@ func _process(delta):
 
 
 ##Eventos
-func enter_light_area(light:SpotLight3D):
+func enter_light_area(light_entered:SpotLight3D):
 	is_in_area   = true
-	light        = light
+	light        = light_entered
 
 func enter_omni_light_area(light:OmniLight3D):
 	is_in_area = true
