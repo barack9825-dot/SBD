@@ -23,11 +23,11 @@ var is_atacking         :bool  = false ##Para reflejar el estado de atacando
 var is_absorving        :bool  = false ##Para reflejar el estado de absorviendo
 var is_being_puryfied   :bool  = false ##Para cuando lo purifican
 var is_being_pushed     :bool  = false ##Para cuando lo están pruficando
-var is_dashing          :bool  = false ##Para cuando esta esquivando
 var is_have_been_pushed :bool  = false ##Para cuando lo han empujado
 var is_in_area          :bool  = false ##Para detectar la luz
 var is_missing          :bool  = false ##Para reflejar el estado de fallando el ataque
 var is_recovering       :bool  = false ##Para reflejar el estado de recuperación
+var player_is_dashing   :bool  = false ##Para cuando esta esquivando
 var player_spotted      :bool  = false ##Para recordar la posición del jugado
 var area_3D_position    :float         ##Para detectar al jugador
 var player_position     :float         ##Para guardar la posición del jugador
@@ -79,7 +79,7 @@ var Animations :Dictionary = {
 	
 	'Fail_Atack':
 		func(): velocity.z = lerp(velocity.z,0.0,0.05),##Arreglar esto
-	
+
 	'BackDash':
 		func():
 			velocity.z   = lerp(speed_run *-axis * 5,0.0,interp_value)
@@ -108,10 +108,11 @@ func _ready():
 
 ##Funciones del Bucle Jugable
 func attack_behavior():
+	print("Is atacking")
 	var col      = selected_raycast.get_collider()
 	var distance = position.z - col.position.z
 	
-	if abs(distance) <= 0.3 && distance/axis < 0 && !is_dashing:
+	if abs(distance) <= 0.3 && distance/axis < 0 && !player_is_dashing:
 		if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
 
 	player_position = col.position.z
@@ -128,6 +129,7 @@ func behavior():
 		
 		axis        = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 		is_atacking = true
+
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
@@ -181,7 +183,7 @@ func movement(frame):
 	
 	move_and_slide()
 	
-	if is_dashing: playback.travel("BackDash")
+	if player_is_dashing: playback.travel("BackDash")
 	elif is_being_pushed && is_have_been_pushed: 
 		playback.travel("Been_Pushed")
 		
@@ -220,6 +222,7 @@ func tween_func(top_speed,bottom_speed,duration,curve):
 
 ##Bucle Jugable
 func _process(delta):
+	
 	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
@@ -238,9 +241,9 @@ func enter_light_area(light_entered:SpotLight3D):
 	is_in_area   = true
 	light        = light_entered
 
-func enter_omni_light_area(light:OmniLight3D):
+func enter_omni_light_area(light_entered:OmniLight3D):
 	is_in_area = true
-	light      = light
+	light      = light_entered
 
 func exit_light_area(): is_in_area = false
 
@@ -277,7 +280,7 @@ func _on_top_detector_body_entered(body):
 		var angle = rad_to_deg(atan2(body.velocity.y,body.velocity.z))
 		
 		if (angle < -110 && angle > -120) || (angle < -60 && angle > -70):
-			is_dashing  = true
+			player_is_dashing  = true
 			is_atacking = false
 		else:
 			emit_signal("Attack",position)
@@ -294,7 +297,7 @@ func end_been_pushed():
 	interp_value        = 0
 
 func end_dashing():
-	is_dashing   = false
+	player_is_dashing   = false
 	interp_value = 0
 
 func miss():
