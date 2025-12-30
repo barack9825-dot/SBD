@@ -27,7 +27,7 @@ var is_have_been_pushed :bool  = false ##Para cuando lo han empujado
 var is_in_area          :bool  = false ##Para detectar la luz
 var is_missing          :bool  = false ##Para reflejar el estado de fallando el ataque
 var is_recovering       :bool  = false ##Para reflejar el estado de recuperación
-var player_is_dashing   :bool  = false ##Para cuando esta esquivando
+var enemy_is_dashing    :bool  = false ##Para cuando esta esquivando
 var player_spotted      :bool  = false ##Para recordar la posición del jugado
 var area_3D_position    :float         ##Para detectar al jugador
 var player_position     :float         ##Para guardar la posición del jugador
@@ -89,7 +89,7 @@ var Animations :Dictionary = {
 		func():
 			velocity = Vector3.ZERO
 			var anim = $AnimationPlayer.get_animation("Being_Pushed")
-			anim.track_set_key_value(5, 0, Vector2(-axis * 118, 0)), 
+			anim.track_set_key_value(4, 0, Vector2(-axis * 118, 0)), 
 	
 	'Recover':
 		func():
@@ -108,26 +108,30 @@ func _ready():
 
 ##Funciones del Bucle Jugable
 func attack_behavior():
-	print("Is atacking")
-	var col      = selected_raycast.get_collider()
-	var distance = position.z - col.position.z
-	
-	if abs(distance) <= 0.3 && distance/axis < 0 && !player_is_dashing:
-		if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
+	var col
+	if selected_raycast != null:
+		col = selected_raycast.get_collider()
+	var distance
+	if col != null:
+		distance = position.z - col.position.z
+		if abs(distance) <= 0.3 && distance/axis < 0 && !enemy_is_dashing:
+			if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
 
-	player_position = col.position.z
+		player_position = col.position.z
+	
+	
 
 func behavior():
+
 	var col = selected_raycast.get_collider()
 	## Para virarse en la dirección del jugador
-	if playback.get_current_node() != "Atack_2" && playback.get_current_node() != "Fail_Atack": axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
+	if playback.get_current_node() in ["Atack_2","Fail_Atack"]: axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 	var distance    = abs(position.z - col.position.z)
 	player_position = col.position.z
-	
+	axis            = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 	if  distance < 1: 
 		playback.travel("Atack_2")
 		
-		axis        = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 		is_atacking = true
 
 	else: playback.travel("Correr")
@@ -170,8 +174,7 @@ func get_colissions( Raycast:RayCast3D ) ->bool:
 		if col.is_in_group("Player"): 
 			selected_raycast = Raycast
 			return true
-		else: 
-			return false
+		else: return false
 
 	else: return false
 
@@ -183,7 +186,7 @@ func movement(frame):
 	
 	move_and_slide()
 	
-	if player_is_dashing: playback.travel("BackDash")
+	if enemy_is_dashing: playback.travel("BackDash")
 	elif is_being_pushed && is_have_been_pushed: 
 		playback.travel("Been_Pushed")
 		
@@ -198,7 +201,10 @@ func movement(frame):
 		
 		playback.travel("Absorving_Individual")
 	
-	elif is_missing: playback.travel("Fail_Atack")
+	
+	elif is_missing: 
+		playback.travel("Fail_Atack")
+		attack_behavior()
 	
 	elif (detect_colissions()):
 		if !is_atacking: behavior()
@@ -222,14 +228,15 @@ func tween_func(top_speed,bottom_speed,duration,curve):
 
 ##Bucle Jugable
 func _process(delta):
-	
+	print(player_spotted)
 	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
 	being_purified(delta)
 	
 	if !is_being_puryfied && (!is_in_area || (is_in_area && darkness)): movement(delta)
-	else: playback.travel("Idle")
+	else: 
+		playback.travel("Idle")
 	
 	blind_spot()
 	
@@ -280,10 +287,10 @@ func _on_top_detector_body_entered(body):
 		var angle = rad_to_deg(atan2(body.velocity.y,body.velocity.z))
 		
 		if (angle < -110 && angle > -120) || (angle < -60 && angle > -70):
-			player_is_dashing  = true
+			enemy_is_dashing  = true
 			is_atacking = false
-		else:
-			emit_signal("Attack",position)
+		#else:
+			#emit_signal("Attack",position)
 
 
 ##Funciones auxiliares
@@ -297,15 +304,16 @@ func end_been_pushed():
 	interp_value        = 0
 
 func end_dashing():
-	player_is_dashing   = false
-	interp_value = 0
+	enemy_is_dashing   = false
+	interp_value        = 0
 
 func miss():
 	is_missing  = true
+
+func recover(): 
+	is_missing = false
 	is_atacking = false
-
-func recover(): is_missing = false
-
+	
 func startBeingPushed(): is_being_pushed = true
 
 func turn(): axis *= -1
