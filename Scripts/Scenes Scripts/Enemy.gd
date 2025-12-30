@@ -129,6 +129,7 @@ func behavior():
 	var distance    = abs(position.z - col.position.z)
 	player_position = col.position.z
 	axis            = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
+
 	if  distance < 1: 
 		playback.travel("Atack_2")
 		
@@ -156,17 +157,18 @@ func blind_spot() ->void:
 		$RayCastRight.target_position.z = -2.37
 
 func checkPlayer() ->void:
-	if player_spotted:
-		var distance = abs(position.z - player_position)
-		if distance > 5: axis = -(position.z-player_position)/abs(position.z - player_position)
+	var distance = abs(position.z - player_position)
+	if distance > 5: axis = -(distance)/abs(distance)
 
 func detect_colissions() ->bool:
 	if get_colissions(left) ||  get_colissions(right):
+		if !player_spotted:$MemoryTimer.start()
 		player_spotted = true
-		return true
 	else:
+		player_spotted = false
 		selected_raycast = null
-		return false
+
+	return player_spotted
 
 func get_colissions( Raycast:RayCast3D ) ->bool:
 	if Raycast.is_colliding():
@@ -209,12 +211,8 @@ func movement(frame):
 	elif (detect_colissions()):
 		if !is_atacking: behavior()
 		else: attack_behavior()
-	
-	else: 
-		if $MemoryTimer.is_stopped() && player_spotted: 
-			$MemoryTimer.start()
-		
-		playback.travel("Correr" if player_spotted else "Caminar")
+
+	else:playback.travel("Correr" if !$MemoryTimer.is_stopped() else "Caminar")
 	
 	state_machine(Animations)
 	
@@ -228,7 +226,7 @@ func tween_func(top_speed,bottom_speed,duration,curve):
 
 ##Bucle Jugable
 func _process(delta):
-	print(player_spotted)
+
 	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
@@ -240,7 +238,7 @@ func _process(delta):
 	
 	blind_spot()
 	
-	checkPlayer()
+	if !$MemoryTimer.is_stopped():checkPlayer()
 
 
 ##Eventos
@@ -258,8 +256,8 @@ func exit_omni_light_area(): is_in_area = false
 
 func _on_dying_timer_timeout():queue_free()
 
-func _on_memory_timer_timeout():
-	player_spotted = false
+#func _on_memory_timer_timeout():
+	#player_spotted = false
 
 func _on_player_confirm(ans,Playerposition): 
 	is_absorving = ans
@@ -289,8 +287,6 @@ func _on_top_detector_body_entered(body):
 		if (angle < -110 && angle > -120) || (angle < -60 && angle > -70):
 			enemy_is_dashing  = true
 			is_atacking = false
-		#else:
-			#emit_signal("Attack",position)
 
 
 ##Funciones auxiliares
