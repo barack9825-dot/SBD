@@ -23,7 +23,7 @@ var is_atacking         :bool  = false ##Para reflejar el estado de atacando
 var is_absorving        :bool  = false ##Para reflejar el estado de absorviendo
 var is_being_puryfied   :bool  = false ##Para cuando lo purifican
 var is_being_pushed     :bool  = false ##Para cuando lo están pruficando
-var is_have_been_pushed :bool  = false ##Para cuando lo han empujado
+var has_been_pushed :bool  = false ##Para cuando lo han empujado
 var is_in_area          :bool  = false ##Para detectar la luz
 var is_missing          :bool  = false ##Para reflejar el estado de fallando el ataque
 var is_recovering       :bool  = false ##Para reflejar el estado de recuperación
@@ -108,31 +108,30 @@ func _ready():
 
 ##Funciones del Bucle Jugable
 func attack_behavior():
+	#print("I'm attacking")
 	var col
-	if selected_raycast != null:
-		col = selected_raycast.get_collider()
 	var distance
+	if selected_raycast != null: col = selected_raycast.get_collider()
+	
 	if col != null:
 		distance = position.z - col.position.z
+		
 		if abs(distance) <= 0.3 && distance/axis < 0 && !enemy_is_dashing:
 			if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
 
 		player_position = col.position.z
-	
-	
 
 func behavior():
-
 	var col = selected_raycast.get_collider()
 	## Para virarse en la dirección del jugador
 	if playback.get_current_node() in ["Atack_2","Fail_Atack"]: axis   = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
 	var distance    = abs(position.z - col.position.z)
 	player_position = col.position.z
 	axis            = selected_raycast.target_position.z / abs(selected_raycast.target_position.z) 
-
-	if  distance < 1: 
+	
+	if  distance < 1 && !(playback.get_current_node() in ["Been_Pushed","Recover"]): 
 		playback.travel("Atack_2")
-		
+
 		is_atacking = true
 
 	else: playback.travel("Correr")
@@ -189,12 +188,12 @@ func movement(frame):
 	move_and_slide()
 	
 	if enemy_is_dashing: playback.travel("BackDash")
-	elif is_being_pushed && is_have_been_pushed: 
+	elif is_being_pushed && has_been_pushed: 
 		playback.travel("Been_Pushed")
 		
 		tween_func(speed_run * 3,0.25,$AnimationPlayer.get_animation("Been_Pushed").length,curve_rejected)
 
-	elif is_have_been_pushed: playback.travel("Being_Pushed")
+	elif has_been_pushed: playback.travel("Being_Pushed")
 	
 	elif is_absorving:
 		if (detect_colissions()):
@@ -256,9 +255,6 @@ func exit_omni_light_area(): is_in_area = false
 
 func _on_dying_timer_timeout():queue_free()
 
-#func _on_memory_timer_timeout():
-	#player_spotted = false
-
 func _on_player_confirm(ans,Playerposition): 
 	is_absorving = ans
 	axis         = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
@@ -266,7 +262,7 @@ func _on_player_confirm(ans,Playerposition):
 func _on_player_freedom(player_position):
 	is_atacking         = false
 	is_absorving        = false
-	is_have_been_pushed = true
+	has_been_pushed = true
 
 func _on_player_purify(state):
 	match state:
@@ -296,7 +292,7 @@ func curve_func_tween(t,top_speed,bottom_speed,curve):
 
 func end_been_pushed():
 	is_being_pushed     = false
-	is_have_been_pushed = false
+	has_been_pushed = false
 	interp_value        = 0
 
 func end_dashing():
@@ -313,12 +309,3 @@ func recover():
 func startBeingPushed(): is_being_pushed = true
 
 func turn(): axis *= -1
-
-
-
-
-
-
-
-
-
