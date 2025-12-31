@@ -11,9 +11,9 @@ func _on_player_intensity(I,id):
 
 func _on_omni_light_area_body_entered(body):
 	if body.is_in_group("Enemy"):
-		body.enterOmniLightArea(self)
+		body.enter_omni_light_area(self)
 
 
 func _on_omni_light_area_body_exited(body):
 	if body.is_in_group("Enemy"):
-		body.exitOmniLightArea()
+		body.exit_omni_light_area()

@@ -27,55 +27,63 @@ var running_speed     : float   = speed * 2   #Multiplicador de la velocidad cor
 var stealth_speed     : float   = speed * 0.5 #Multiplicador de la velocidad en sigilo
 var identify          : String                #Variable para identificar el tipo de nodo de luz con el que estamos intereactuando
 var screen_size       : Vector2               #Variable que almacena el tamaño de la pantalla            
-var enemyNear         : Vector3               #Para saber donde esta el enemigo que te esta purificando  
+var enemy_near         : Vector3               #Para saber donde esta el enemigo que te esta purificando  
 var path_position     : Vector3               #Para obtener la posición global del path
 var storaged_error    : Vector3               #Para la acción integral
 var tween             : Tween                 #Instancia del tween
 ##Declaración de constantes
-const Gravity      = 15 ##Constante para la gravedad
+const Gravity = 15 ##Constante para la gravedad
 
 ##Animaciones
 var Animations : Dictionary = {
 	'Idle':
 		func():
-			velocity = Vector3.ZERO
+			velocity                            = Vector3.ZERO
 			$Path3D/PathFollow3D.progress_ratio = 0
-			$Path3D.position = Vector3.ZERO
+			$Path3D.position                    = Vector3.ZERO
+			
 			playback.travel(ground_motion()),
 	
 	'Caminar':
 		func():
 			velocity.z = -get_axis() * speed
+			
 			playback.travel(ground_motion()),
 	
 	'Sigilo':
 		func():
 			velocity.z = -get_axis() * stealth_speed
+			
 			playback.travel(ground_motion()),
 	
 	'Correr':
 		func():
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(ground_motion()),
 	
 	'Elevar':
 		func(): 
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(air_motion()),
 	
 	'Caer':
 		func(): 
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(air_motion()),
 	
 	'Incorporar':
 		func(): 
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(air_motion()),
 	
 	'Aterrizar':
 		func(): 
 			velocity.z = 0
+			
 			playback.travel(ground_motion()),
 	
 	'Subir':
@@ -89,26 +97,31 @@ var Animations : Dictionary = {
 	'Idle_Caminar_Transition':
 		func():
 			velocity.z = -get_axis() * speed * 0.5
+			
 			playback.travel(ground_motion()),
 	
 	'Caminar_Idle_Transition':
 		func():
 			velocity.z *= -0.1
+			
 			playback.travel(ground_motion()),
 	
 	'Idle_Correr_Transition':
 		func():
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(ground_motion()),
 	
 	'Idle_Correr_transition 2':
 		func():
 			velocity.z = -get_axis() * running_speed
+			
 			playback.travel(ground_motion()),
 	
 	'Correr_Idle_Transition':
 		func():
 			velocity.z *= -0.1
+			
 			playback.travel(ground_motion()),
 	
 	'Being_Absorbed':
@@ -120,7 +133,6 @@ var Animations : Dictionary = {
 	'Dash':
 		func():
 			playback.travel(ground_motion()),
-
 }
 
 ##Inicialización
@@ -145,10 +157,10 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 	if is_on_floor():
 		can_climb = true ##OJO veriicar si es necesario la condicion is_on_floor
 		if is_being_absorbed:
-			tweenFunc(abs(position.z-enemyNear.z)-0.21,position.z,0.2)
+			tween_func(abs(position.z-enemy_near.z)-0.21,position.z,0.2)
 			return "Being_Absorbed"
 		
-		if Input.is_action_just_pressed("ui_accept") && playback.get_current_node() != 'Aterrizar':
+		if Input.is_action_just_pressed("ui_accept") && !(playback.get_current_node() in ['Aterrizar','Dash']):
 			velocity.y += Jump_Speed
 			return "Elevar"
 		
@@ -157,7 +169,7 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 				if Input.is_action_just_pressed("Dash") && playback.get_current_node()=="Correr":
 					if can_dash:
 						var duration = $AnimationPlayer.get_animation("Dash").length
-						tweenFunc(1,position.z,duration)
+						tween_func(1,position.z,duration)
 						return "Dash"
 				
 				return "Correr"
@@ -173,7 +185,7 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 func air_motion() ->String: ##Función para establecer las condiciones en las animaciones aéreas
 	if is_being_absorbed:
 
-		tweenFunc2(abs(position.z - enemyNear.z) - 0.21,position.z,0.2,abs(position.y - enemyNear.y),position.y)
+		tween_func2(abs(position.z - enemy_near.z) - 0.21,position.z,0.2,abs(position.y - enemy_near.y),position.y)
 		return "Being_Absorbed 2"
 	
 	if $RayCast3D.is_colliding():
@@ -182,7 +194,7 @@ func air_motion() ->String: ##Función para establecer las condiciones en las an
 			$RayCast3D.enabled         = false
 			path_position              = $Path3D.global_position
 			$CollisionShape3D.disabled = true
-			tweenFuncT($Path3D/PathFollow3D.progress_ratio,$AnimationPlayer.get_animation("Subir").length)
+			tween_funcT($Path3D/PathFollow3D.progress_ratio,$AnimationPlayer.get_animation("Subir").length)
 			return "Subir"
 	
 	if   velocity.y < 0:  return "Caer"
@@ -190,41 +202,19 @@ func air_motion() ->String: ##Función para establecer las condiciones en las an
 	elif is_on_floor():   return "Aterrizar"
 	else:                 return "Elevar"
 
-func climb() ->void: ##Función para habilitar que el personaje escale
-##OJO arreglar bug cuando el personaje cae y pasa por la esquina de la plataforma 
-##activando el climb pero continuando con su caida
+func climb() ->void: 
 	if !is_on_floor() && $RayCast3D.is_colliding():
 		var col = $RayCast3D.get_collider()
 		if col.is_in_group("Plataforma"):
 			$RayCast3D.enabled = false
 			playback.travel("Subir")
 
-##Función para corregir las físicas del personaje cuando este se le desplaza por código de forma abrupta
-##Buscar una manera de corregir esto de mejor manera
-func physics(frame) ->void: 
-	if(velocity.x != 0):
-		set_velocity(Vector3(0,-Gravity*frame,0))
-	if(position.x != 2.05): position.x = 2.05
-
 func flip_h_player() ->void: ##Función para voltear el Sprite en la dirección correcta
 	if !["Subir","Being_Absorved","Being_Absorved2","Dash_2","Caminar_Idle_Transition"].has(playback.get_current_node()): flip_h()
 	
 	if is_being_absorbed:
-		var distance = position.z-enemyNear.z
+		var distance = position.z-enemy_near.z
 		axis         = distance/abs(distance)
-
-func updatePosAfterClimb() ->void: ##Función que se encarga de establecer la posicion del nodo al terminar la animacion de subir en función de el offset del Sprite
-	##Se establece la nueva posición del nodo
-	var actualPosition:Vector3 = Vector3(
-		0,
-		$Sprite3D.offset.y,
-		$Sprite3D.offset.x * -$Sprite3D.scale.x / abs( $Sprite3D.scale.x )#En este caso se multiplica por el opuesto de la escala entre su valor absoluto para obtener ajustar la posicion segun la direccion en la que mire
-		)
-	set_position(position + actualPosition * abs( $Sprite3D.scale.x ) / 100)
-	$Sprite3D.offset           = Vector2.ZERO
-	if $Sprite3D.scale.x == -0.25: $Sprite3D.flip_h = true
-	$Sprite3D.scale.x          = 0.25
-	$CollisionShape3D.disabled = false
 
 func impulse(to_speed:float, time:float, displacement:float) ->float:
 	return (2 * displacement - to_speed * time)/time
@@ -248,36 +238,66 @@ func light_bend():
 
 func release():
 	if Input.is_action_just_pressed("Liberarse"):
-		is_being_absorbed                                  = false
+		is_being_absorbed                                   = false
 		interp                                              = 0.0
+		
 		playback.travel("Idle")
+		
 		$DyingTime.stop()
+		
 		emit_signal("Freedom",position.z)
 
 func motion(delta):
 	if !is_purifying:
+		
 		state_machine(Animations)
+		
 		if !is_being_absorbed: jump_modulator(delta)
+		
 		if playback.get_current_node() != "Dash": 
 			move_and_slide()
+		
 			flip_h_player()
+		
 		if !is_being_absorbed: jump_modulator(delta)
 	
 	climb()
-	physics(delta)
 
-func tweenFunc(distance,from,duration):
+
+##Bucle jugable
+func _physics_process(delta) ->void:
+	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
+	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start")
+	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
+	if Input.is_action_just_released("Purificar") && near_enemy: emit_signal("Purify","interrupt")
+	if is_being_absorbed && can_release: release()
+	
+	light_bend()
+	
+	motion(delta)
+	
+	IntesityEmitter()
+
+
+##Funciones auxiliares
+func tween_func(distance,from,duration):
+	
 	reset_tween()
+	
 	tween.tween_method(func(interp):curveFuncX(interp,distance,from),0.0,1.0,duration)
 
-func tweenFunc2(distanceX,fromX,duration,distanceY,fromY):
+func tween_func2(distanceX,fromX,duration,distanceY,fromY):
 	var tween = create_tween()
+	
 	tween.set_parallel()
+	
 	tween.tween_method(func(interp):curveFuncX(interp,distanceX,fromX),0.0,1.0,duration)
+	
 	tween.tween_method(func(interp):curveFuncY(interp,distanceY,fromY),0.0,1.0,duration)
 
-func tweenFuncT(progRatio,duration):
+func tween_funcT(progRatio,duration):
 	var tween = create_tween()
+	
 	tween.tween_method(func(interp):curveFuncT(progRatio,interp),0.0,1.0,duration)
 
 func curveFuncX(t,distance,from):
@@ -291,25 +311,12 @@ func curveFuncT(progRatio,t):
 	$Path3D/PathFollow3D.progress_ratio = lerp(0.0,1.0,curveClimb.sample(t))
 
 
-##Bucle jugable
-func _physics_process(delta) ->void:
-	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
-	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start")
-	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
-	if Input.is_action_just_released("Purificar") && near_enemy: emit_signal("Purify","interrupt")
-	
-	if is_being_absorbed && can_release:
-		release()
-	
-	light_bend()
-	motion(delta)
-	IntesityEmitter()
-
-
 ##Eventos 
 func endDashing():
 	is_dashing = false
+	
 	$Cooldown.start()
+	
 	can_dash = false
 
 func _on_area_3d_2_body_entered(body):
@@ -329,11 +336,14 @@ func _on_area_3d_body_entered(body): if body.is_in_group("Enemy"): near_enemy = 
 func _on_area_3d_body_exited(body): if body.is_in_group("Enemy"): near_enemy = false
 
 func _on_enemy_attack(enemyPosition):
-	enemyNear = enemyPosition
+	enemy_near = enemyPosition
 	if !is_dashing:
 		is_being_absorbed = true
+	
 		$DyingTime.start(dyingTime)
+	
 		emit_signal("Confirm",true,position)
+
 	else: emit_signal("Confirm",false)
 
 func _on_dying_time_timeout():get_tree().quit()
@@ -342,8 +352,7 @@ func _on_cooldown_timeout():
 	can_dash = true
 
 func reset_tween():
-	if tween:
-		tween.kill()
+	if tween: tween.kill()
 	tween = create_tween()
 
 func start_dashing():
@@ -351,7 +360,7 @@ func start_dashing():
 
 func end_climbing():
 	$CollisionShape3D.disabled = false
-	$RayCast3D.enabled = true
+	$RayCast3D.enabled         = true
 
-func gameOver():
+func game_over():
 	can_release = false
