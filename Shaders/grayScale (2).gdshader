@@ -1,25 +1,22 @@
 shader_type spatial;
-uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
-//uniform sampler2D SCREEN_LIGHT: hint_default_transparent;
-uniform float valueMax:hint_range(0,1)=0.5;
-uniform float valueMin:hint_range(0,1)=0.5;
-uniform vec3 camera_pos; 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
+
+global uniform vec3 player_pos : hint_range(-100,100);
+uniform float sphere_size : hint_range(0.1, 20.0) = 3.0;
+uniform sampler2D my_texture;
+uniform float value : hint_range(-1,10) = 0.5;
 
 void fragment() {
-	vec4 screen_color = texture(SCREEN_TEXTURE,SCREEN_UV);
-	ALBEDO =screen_color.rgb;
-	//ALPHA=0.5;
-	//ROUGHNESS=value;
-	
-
-	// Called for every pixel the material is visible on.
-}
-
-void light() {
-	
-	//DIFFUSE_LIGHT = LIGHT_COLOR*min(dot(NORMAL,LIGHT),0.0);
-	// Called for every pixel for every light affecting the material.
+    vec4 pixelColor = textureLod(my_texture, UV, 0.0);
+    
+    // RECONSTRUCCIÓN CORRECTA de World Position en fragment (Godot 4.2)
+    vec3 world_position = (INV_VIEW_MATRIX * vec4(VIEW_POSITION, 1.0)).xyz;
+    
+    float dist = length(player_pos - world_position);
+    float flashState = clamp(sphere_size - dist, 0.0, 1.0);
+    
+    float brightness = dot(pixelColor.rgb, vec3(0.299, 0.587, 0.114));
+    vec3 grayScale = vec3(brightness);
+    
+    ALBEDO = mix(pixelColor.rgb, grayScale, flashState);
+    ALPHA = pixelColor.a * flashState;
 }

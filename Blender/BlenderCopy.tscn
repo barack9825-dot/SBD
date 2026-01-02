@@ -1,4 +1,4 @@
-[gd_scene load_steps=354 format=3 uid="uid://c6p6xxy54pwd1"]
+[gd_scene load_steps=358 format=3 uid="uid://c6p6xxy54pwd1"]
 
 [ext_resource type="Texture2D" uid="uid://cib8mwoaqrotu" path="res://Blender/textures/Casa 3.png" id="1_jott4"]
 [ext_resource type="Texture2D" uid="uid://c7dejr0n03ebk" path="res://Blender/textures/casa 1.png" id="2_wcf6c"]
@@ -33,8 +33,17 @@
 [ext_resource type="Texture2D" uid="uid://bj02p7cc4btsc" path="res://Blender/textures/piedras.png" id="31_t64hy"]
 [ext_resource type="Texture2D" uid="uid://dhi3mu3hxe50o" path="res://Blender/textures/tierra 1.png" id="32_6guhi"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lqau"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("1_jott4")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl8mi"]
 resource_name = "Casa 3"
+render_priority = -1
+next_pass = SubResource("ShaderMaterial_8lqau")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("1_jott4")
@@ -74,7 +83,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_c1p77")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rivbj"]
-render_priority = 1
+render_priority = 0
 shader = ExtResource("3_1fijv")
 shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
@@ -82,6 +91,7 @@ shader_parameter/my_texture = ExtResource("2_wcf6c")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4lub"]
 resource_name = "casa 1"
+render_priority = -1
 next_pass = SubResource("ShaderMaterial_rivbj")
 transparency = 4
 cull_mode = 2
@@ -201,8 +211,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_5tec2")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wcph"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("6_pko1o")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vg8fv"]
 resource_name = "casa 4"
+render_priority = -1
+next_pass = SubResource("ShaderMaterial_0wcph")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("6_pko1o")
@@ -242,7 +261,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mpry7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mp06q"]
-render_priority = 1
+render_priority = 0
 shader = ExtResource("3_1fijv")
 shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
@@ -250,6 +269,7 @@ shader_parameter/my_texture = ExtResource("7_7dpbx")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w54tw"]
 resource_name = "casa2"
+render_priority = -1
 next_pass = SubResource("ShaderMaterial_mp06q")
 transparency = 4
 cull_mode = 2
@@ -290,7 +310,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_xlpah")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q3goy"]
-render_priority = 1
+render_priority = 0
 shader = ExtResource("3_1fijv")
 shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
@@ -298,6 +318,7 @@ shader_parameter/my_texture = ExtResource("8_g14ln")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t76if"]
 resource_name = "casa5"
+render_priority = -1
 next_pass = SubResource("ShaderMaterial_q3goy")
 transparency = 4
 cull_mode = 2
@@ -817,8 +838,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_rfsem")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hvpcn"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("9_2lvry")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_um54y"]
 resource_name = "banco1"
+render_priority = -1
+next_pass = SubResource("ShaderMaterial_hvpcn")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("9_2lvry")
@@ -937,8 +967,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_syqrk")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6b22j"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("12_hb7s1")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3n2w"]
 resource_name = "books paper"
+render_priority = -1
+next_pass = SubResource("ShaderMaterial_6b22j")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("12_hb7s1")
@@ -5145,6 +5184,11 @@ mesh = SubResource("ArrayMesh_tywrt")
 skeleton = NodePath("")
 
 [node name="farola2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 1.82666, -5.44388e-08, 5.44388e-08, 0, -1.82666, -1.82666, -5.44388e-08, 0, 0.815529, 0.958679, -19.2721)
+mesh = SubResource("ArrayMesh_52sxw")
+skeleton = NodePath("")
+
+[node name="farola3" type="MeshInstance3D" parent="."]
 transform = Transform3D(0, 1.82666, -5.44388e-08, 5.44388e-08, 0, -1.82666, -1.82666, -5.44388e-08, 0, 0.815529, 0.958679, -19.2721)
 mesh = SubResource("ArrayMesh_52sxw")
 skeleton = NodePath("")

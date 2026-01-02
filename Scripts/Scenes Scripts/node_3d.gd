@@ -16,7 +16,8 @@ func _ready():
 
 ##Bucle jugable
 func _process(delta):
-	#RenderingServer.global_shader_parater_set("player_pos",$Enemy.position)
+	RenderingServer.global_shader_parameter_set("player_pos",$Enemy.position)
+	
 	if activate_bend:
 		var playerCloseness = $Player.global_position.distance_to(spot_light.global_position)
 		if playerCloseness <=2 && playerCloseness >=-2:
