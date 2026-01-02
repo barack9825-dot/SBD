@@ -155,13 +155,13 @@ func blind_spot() ->void:
 		$RayCastLeft.target_position.z  = 3
 		$RayCastRight.target_position.z = -2.37
 
-func checkPlayer() ->void:
+func checkPlayer() -> void:
 	var distance = abs(position.z - player_position)
 	if distance > 5: axis = -(distance)/abs(distance)
 
-func detect_colissions() ->bool:
+func detect_colissions() -> bool:
 	if get_colissions(left) ||  get_colissions(right):
-		if !player_spotted:$MemoryTimer.start()
+		if !player_spotted: $MemoryTimer.start()
 		player_spotted = true
 	else:
 		player_spotted   = false
