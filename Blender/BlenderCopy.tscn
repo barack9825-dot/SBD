@@ -1,4 +1,4 @@
-[gd_scene load_steps=358 format=3 uid="uid://c6p6xxy54pwd1"]
+[gd_scene load_steps=359 format=3 uid="uid://c6p6xxy54pwd1"]
 
 [ext_resource type="Texture2D" uid="uid://cib8mwoaqrotu" path="res://Blender/textures/Casa 3.png" id="1_jott4"]
 [ext_resource type="Texture2D" uid="uid://c7dejr0n03ebk" path="res://Blender/textures/casa 1.png" id="2_wcf6c"]
@@ -887,8 +887,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_i5kr1")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dak6x"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("10_myoij")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kcjn4"]
 resource_name = "farola2"
+render_priority = -1
+next_pass = SubResource("ShaderMaterial_dak6x")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("10_myoij")

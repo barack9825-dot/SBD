@@ -345,7 +345,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11156, 0.58618, -0.0110664)
 shape = SubResource("BoxShape3D_kqkjb")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism"]
-transform = Transform3D(0.958949, -0.00275673, 0.283566, -0.28358, -0.00932222, 0.958903, 3.35276e-08, -0.999953, -0.00972128, -0.174026, 0.849073, -2.89331)
+transform = Transform3D(0.958949, -0.00275673, 0.283567, -0.28358, -0.00932222, 0.958903, 3.35276e-08, -0.999953, -0.00972128, -0.174026, 0.777291, -2.89331)
 light_color = Color(0.996078, 1, 0.478431, 1)
 light_energy = 1.9
 light_specular = 0.0

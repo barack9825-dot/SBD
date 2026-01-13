@@ -33,7 +33,7 @@ void fragment() {
 }
 
 void light() {
-	//DIFFUSE_LIGHT=vec3(0.1);
-	//DIFFUSE_LIGHT=LIGHT_COLOR*dot(LIGHT,NORMAL);
+	DIFFUSE_LIGHT +=LIGHT_COLOR*ATTENUATION*dot(LIGHT,NORMAL);
+	//DIFFUSE_LIGHT += LIGHT_COLOR * dot(LIGHT,NORMAL);
 	// Called for every pixel for every light affecting the material.
 }
