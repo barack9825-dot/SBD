@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ccq8hh1qdlwsc"]
+[gd_scene load_steps=27 format=3 uid="uid://ccq8hh1qdlwsc"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_al807"]
 [ext_resource type="PackedScene" uid="uid://c6p6xxy54pwd1" path="res://Blender/BlenderCopy.tscn" id="3_rieqm"]
@@ -27,6 +27,15 @@ data = PackedVector3Array(-0.5, 0.05, 0.5, 0.5, 0.05, 0.5, -0.5, -0.05, 0.5, 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqkjb"]
 size = Vector3(1, 1.20813, 0.52063)
+
+[sub_resource type="Gradient" id="Gradient_il4y5"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qu3xt"]
+gradient = SubResource("Gradient_il4y5")
+fill = 1
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jiete"]
 size = Vector3(1, 2.22168, 1.27655)
@@ -346,8 +355,9 @@ shape = SubResource("BoxShape3D_kqkjb")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism"]
 transform = Transform3D(0.958949, -0.00275673, 0.283567, -0.28358, -0.00932222, 0.958903, 3.35276e-08, -0.999953, -0.00972128, -0.174026, 0.777291, -2.89331)
-light_color = Color(0.996078, 1, 0.478431, 1)
+light_color = Color(1, 1, 0.478431, 1)
 light_energy = 1.9
+light_projector = SubResource("GradientTexture2D_qu3xt")
 light_specular = 0.0
 shadow_enabled = true
 spot_range = 3.36982

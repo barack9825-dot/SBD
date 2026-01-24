@@ -1,4 +1,4 @@
-[gd_scene load_steps=359 format=3 uid="uid://c6p6xxy54pwd1"]
+[gd_scene load_steps=357 format=3 uid="uid://c6p6xxy54pwd1"]
 
 [ext_resource type="Texture2D" uid="uid://cib8mwoaqrotu" path="res://Blender/textures/Casa 3.png" id="1_jott4"]
 [ext_resource type="Texture2D" uid="uid://c7dejr0n03ebk" path="res://Blender/textures/casa 1.png" id="2_wcf6c"]
@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://dwcxsbwwhp83t" path="res://Blender/textures/farola2.png" id="10_myoij"]
 [ext_resource type="Texture2D" uid="uid://dcikapegi75sm" path="res://Blender/textures/farola1.png" id="11_k7lkj"]
 [ext_resource type="Texture2D" uid="uid://b67hu3mfptvd7" path="res://Blender/textures/books paper.png" id="12_hb7s1"]
-[ext_resource type="Texture2D" uid="uid://cpame6yv40hmq" path="res://Blender/textures/jorge para referencia.png" id="13_n36ic"]
 [ext_resource type="Texture2D" uid="uid://ckg7v4yria46j" path="res://Blender/textures/suelo1.png" id="14_5yrnt"]
 [ext_resource type="Texture2D" uid="uid://mmfqqc5dj6hl" path="res://Blender/textures/piso 1.png" id="15_4sc8s"]
 [ext_resource type="Texture2D" uid="uid://cdkt6xku01lnv" path="res://Blender/textures/cerca2.png" id="16_fkk46"]
@@ -1193,45 +1192,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wg715")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_abgxe"]
-resource_name = "jorge para referencia"
-transparency = 4
-cull_mode = 2
-albedo_texture = ExtResource("13_n36ic")
-roughness = 0.5
-texture_repeat = false
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mekkl"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_ghiom"]
-_surfaces = [{
-"aabb": AABB(-0.202128, 0, -0.5, 0.404255, 1e-05, 1.00001),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0),
-"name": "jorge para referencia",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray(0, 0, 0, 0, 254, 255, 0, 0, 255, 255, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0)
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_5v6bp"]
-resource_name = "Jorge_jorge para referencia"
-_surfaces = [{
-"aabb": AABB(-0.202128, 0, -0.5, 0.404255, 1e-05, 1.00001),
-"attribute_data": PackedByteArray(0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 0, 0),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0),
-"material": SubResource("StandardMaterial3D_abgxe"),
-"name": "jorge para referencia",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray(0, 0, 0, 0, 254, 255, 255, 191, 255, 255, 0, 0, 254, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_ghiom")
+[sub_resource type="QuadMesh" id="QuadMesh_506xg"]
+material = SubResource("StandardMaterial3D_mekkl")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_aa6ph"]
 _surfaces = [{
@@ -5238,8 +5202,8 @@ mesh = SubResource("ArrayMesh_d0hs3")
 skeleton = NodePath("")
 
 [node name="jorge para referencia" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, 1.15049, -3.42874e-08, 3.42874e-08, 0, -1.15049, -1.15049, -3.42874e-08, 0, 0.734957, 0.620409, -18.7447)
-mesh = SubResource("ArrayMesh_5v6bp")
+transform = Transform3D(-5.02895e-08, 0, 1.15049, 0, 1.15049, 0, -1.15049, 0, -5.02895e-08, 0.734957, 0.620409, -19.1379)
+mesh = SubResource("QuadMesh_506xg")
 skeleton = NodePath("")
 
 [node name="casa 1_004" type="MeshInstance3D" parent="."]
