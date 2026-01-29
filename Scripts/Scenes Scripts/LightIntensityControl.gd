@@ -2,9 +2,10 @@ extends SpotLight3D
 
 #Variables
 var graystyle     : bool  = false                                #Para activar la mascara de gris de la luz
-var enemyposition : float                                       #Para acceder a la posicion del enemigo 
-var frame         : int                                         #Para seleccionar cuál de los dos puntos del proyector se va a activar
+var enemyposition : float                                        #Para acceder a la posicion del enemigo 
+var frame         : int                                          #Para seleccionar cuál de los dos puntos del proyector se va a activar
 var grad_tex              = light_projector as GradientTexture2D #Instancia del gradiente 2D
+
 
 func _physics_process(delta):
 	
