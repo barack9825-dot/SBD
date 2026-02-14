@@ -1,4 +1,4 @@
-[gd_scene load_steps=357 format=3 uid="uid://c6p6xxy54pwd1"]
+[gd_scene load_steps=356 format=3 uid="uid://c6p6xxy54pwd1"]
 
 [ext_resource type="Texture2D" uid="uid://cib8mwoaqrotu" path="res://Blender/textures/Casa 3.png" id="1_jott4"]
 [ext_resource type="Texture2D" uid="uid://c7dejr0n03ebk" path="res://Blender/textures/casa 1.png" id="2_wcf6c"]
@@ -935,8 +935,16 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bwkwi")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6brec"]
+render_priority = 0
+shader = ExtResource("3_1fijv")
+shader_parameter/sphere_size = 3.0
+shader_parameter/value = 0.5
+shader_parameter/my_texture = ExtResource("11_k7lkj")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xt3jm"]
 resource_name = "farola1"
+next_pass = SubResource("ShaderMaterial_6brec")
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("11_k7lkj")
@@ -1191,11 +1199,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wg715")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mekkl"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_506xg"]
-material = SubResource("StandardMaterial3D_mekkl")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_aa6ph"]
 _surfaces = [{
@@ -5203,7 +5206,6 @@ skeleton = NodePath("")
 
 [node name="jorge para referencia" type="MeshInstance3D" parent="."]
 transform = Transform3D(-5.02895e-08, 0, 1.15049, 0, 1.15049, 0, -1.15049, 0, -5.02895e-08, 0.734957, 0.620409, -19.1379)
-mesh = SubResource("QuadMesh_506xg")
 skeleton = NodePath("")
 
 [node name="casa 1_004" type="MeshInstance3D" parent="."]
