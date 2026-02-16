@@ -30,6 +30,7 @@ var is_recovering       :bool  = false ##Para reflejar el estado de recuperació
 var enemy_is_dashing    :bool  = false ##Para cuando esta esquivando
 var player_spotted      :bool  = false ##Para recordar la posición del jugado
 var area_3D_position    :float         ##Para detectar al jugador
+var decoloration        :float = 1.0   ##Para ajustar el valor de la sombra de blanco y negro del enemigo 
 var player_position     :float         ##Para guardar la posición del jugador
 var progress_bar_value  :float = 0     ##Para cambiar el valor de la barra de progreso
 var interp_value        :float = 0.0   ##Valor para desacelerar cuando se ataca
@@ -137,16 +138,20 @@ func behavior():
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
+	decoloration = lerp(3,0,progress_bar_value)
+	RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
 	if is_being_puryfied:
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
-	
+		print(progress_bar_value)
 	else:
 		$Sprite_Progress_Bar.visible                       = false
-		progress_bar_value                                 = 0
+		#progress_bar_value = 0
+		print("else")
+		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
-
+	
 func blind_spot() ->void:
 	if $Sprite3D.flip_h:
 		$RayCastLeft.target_position.z  = 2.37
@@ -267,12 +272,12 @@ func _on_player_freedom(player_position):
 func _on_player_purify(state):
 	match state:
 		"start":	
-			$DyngTimer.start(dying_time)
+			$DyingTimer.start(dying_time)
 			
 			is_being_puryfied = true
 		
 		"interrupt":
-			$DyngTimer.stop()
+			$DyingTimer.stop()
 			
 			is_being_puryfied = false
 

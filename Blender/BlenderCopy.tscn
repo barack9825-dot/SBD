@@ -35,7 +35,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lqau"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("1_jott4")
 
@@ -84,7 +83,6 @@ shadow_mesh = SubResource("ArrayMesh_c1p77")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rivbj"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("2_wcf6c")
 
@@ -213,7 +211,6 @@ shadow_mesh = SubResource("ArrayMesh_5tec2")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0wcph"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("6_pko1o")
 
@@ -262,7 +259,6 @@ shadow_mesh = SubResource("ArrayMesh_mpry7")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mp06q"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("7_7dpbx")
 
@@ -311,7 +307,6 @@ shadow_mesh = SubResource("ArrayMesh_xlpah")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q3goy"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("8_g14ln")
 
@@ -840,7 +835,6 @@ shadow_mesh = SubResource("ArrayMesh_rfsem")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hvpcn"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("9_2lvry")
 
@@ -889,7 +883,6 @@ shadow_mesh = SubResource("ArrayMesh_i5kr1")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dak6x"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("10_myoij")
 
@@ -938,7 +931,6 @@ shadow_mesh = SubResource("ArrayMesh_bwkwi")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6brec"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("11_k7lkj")
 
@@ -986,7 +978,6 @@ shadow_mesh = SubResource("ArrayMesh_syqrk")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6b22j"]
 render_priority = 0
 shader = ExtResource("3_1fijv")
-shader_parameter/sphere_size = 3.0
 shader_parameter/value = 0.5
 shader_parameter/my_texture = ExtResource("12_hb7s1")
 
