@@ -144,11 +144,11 @@ func being_purified(delta)->void:
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
-		print(progress_bar_value)
+
 	else:
 		$Sprite_Progress_Bar.visible                       = false
 		#progress_bar_value = 0
-		print("else")
+		#print("else")
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
 	

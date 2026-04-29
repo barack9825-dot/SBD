@@ -1,6 +1,8 @@
 extends Node3D
 
 @onready var spot_light             = $spotLightMeacnism/SpotLight3D
+@onready var enemy                  = $Enemy as CharacterBody3D
+
 @export  var CurveLight     : Curve = Curve.new()                      # Curva para mover la luz
 
 ##Variables
@@ -12,29 +14,36 @@ var spotLightRotation : Vector3 = Vector3.ZERO ##Para obtener la rotación inici
 ##Inicialización
 func _ready():
 	spotLightRotation = spot_light.rotation
+	RenderingServer.global_shader_parameter_add("player_pos2",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	#$AudioStreamPlayer.play()
 
+func shader_assingment():
+		for i in get_node("BlenderImportCopy").get_children() as Array[MeshInstance3D]:
+			if i.get_class() == "MeshInstance3D":
+				i.set_instance_shader_parameter("player_pos",enemy.position)
+				#print(i.get_instance_shader_parameter("player_pos"))
 
 ##Bucle jugable
-func _process(delta):
+func _process(_delta):
+	
 	RenderingServer.global_shader_parameter_set("player_pos",$Enemy.position)
+	RenderingServer.global_shader_parameter_set("player_pos2",$Enemy2.position)
+
 	
 	if activate_bend:
-		var dir   = ($Player.global_position-spot_light.global_position).normalized()
-		var basis = spot_light.basis.looking_at(dir,Vector3.UP)
-		finalRotation   = basis.get_euler()
-		print(finalRotation)
-		
+		var dir             = ($Player.global_position-spot_light.global_position).normalized()
+		var basis           = spot_light.basis.looking_at(dir,Vector3.UP)
+		finalRotation       = basis.get_euler()
 		var playerCloseness = $Player.global_position.distance_to(spot_light.global_position)
+		
 		if playerCloseness <=2 && playerCloseness >=-2:
 			spot_light.rotation = lerp(spotLightRotation,finalRotation,interpolate)
-
-			interpolate = clampf(interpolate+4 * get_process_delta_time(),0,1)
+			interpolate         = clampf(interpolate+4 * get_process_delta_time(),0,1)
+		
 		else:
 			spot_light.rotation = lerp(spotLightRotation,finalRotation,interpolate)
 			interpolate = clampf(interpolate - 4 * get_process_delta_time(),0,1)
-
-
+	
 	else: 
 		spot_light.rotation = lerp(spotLightRotation,finalRotation,interpolate)
 		interpolate = clampf(interpolate - 4 * get_process_delta_time(),0,1)
@@ -58,3 +67,7 @@ func _on_player_light_bend(is_bending): activate_bend = is_bending
 
 func CurveFuncLigh():
 	spot_light.look_at()
+
+
+func _on_area_3d_3_body_exited(body):
+	if body.has_method('turn'): body.turn()

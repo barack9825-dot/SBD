@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ccq8hh1qdlwsc"]
+[gd_scene load_steps=28 format=3 uid="uid://ccq8hh1qdlwsc"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_al807"]
 [ext_resource type="PackedScene" uid="uid://c6p6xxy54pwd1" path="res://Blender/BlenderCopy.tscn" id="3_rieqm"]
@@ -22,6 +22,15 @@ size = Vector3(1, 0.1, 1)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_y0wej"]
 data = PackedVector3Array(-0.5, 0.05, 0.5, 0.5, 0.05, 0.5, -0.5, -0.05, 0.5, 0.5, 0.05, 0.5, 0.5, -0.05, 0.5, -0.5, -0.05, 0.5, 0.5, 0.05, -0.5, -0.5, 0.05, -0.5, 0.5, -0.05, -0.5, -0.5, 0.05, -0.5, -0.5, -0.05, -0.5, 0.5, -0.05, -0.5, 0.5, 0.05, 0.5, 0.5, 0.05, -0.5, 0.5, -0.05, 0.5, 0.5, 0.05, -0.5, 0.5, -0.05, -0.5, 0.5, -0.05, 0.5, -0.5, 0.05, -0.5, -0.5, 0.05, 0.5, -0.5, -0.05, -0.5, -0.5, 0.05, 0.5, -0.5, -0.05, 0.5, -0.5, -0.05, -0.5, 0.5, 0.05, 0.5, -0.5, 0.05, 0.5, 0.5, 0.05, -0.5, -0.5, 0.05, 0.5, -0.5, 0.05, -0.5, 0.5, 0.05, -0.5, -0.5, -0.05, 0.5, 0.5, -0.05, 0.5, -0.5, -0.05, -0.5, 0.5, -0.05, 0.5, 0.5, -0.05, -0.5, -0.5, -0.05, -0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qcmyy"]
+size = Vector3(1, 0.1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aq8mp"]
+size = Vector3(1, 0.130615, 5.08191)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_srfby"]
+size = Vector3(1, 2, 4.75)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qswxn"]
 
@@ -327,6 +336,24 @@ collision_layer = 4
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_y0wej")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72824, 2.00087, -7.78197)
+mesh = SubResource("BoxMesh_qcmyy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2" groups=["Plataforma"]]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0238647)
+shape = SubResource("BoxShape3D_aq8mp")
+
+[node name="Area3D3" type="Area3D" parent="MeshInstance3D2"]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/Area3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_srfby")
+
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90937, 0.460278, 0)
 
@@ -469,6 +496,10 @@ collision_mask = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.357)
 shape = SubResource("BoxShape3D_oohu4")
 
+[node name="Enemy2" parent="." instance=ExtResource("13_70t8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
+
+[connection signal="body_exited" from="MeshInstance3D2/Area3D3" to="." method="_on_area_3d_3_body_exited"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="body_entered" from="spotLightMeacnism/Area3D2" to="Player" method="_on_area_3d_2_body_entered"]
@@ -480,7 +511,9 @@ shape = SubResource("BoxShape3D_oohu4")
 [connection signal="body_entered" from="omniLightMecanism/Area3D3" to="Player" method="_on_area_3d_3_body_entered"]
 [connection signal="body_exited" from="omniLightMecanism/Area3D3" to="Player" method="_on_area_3d_3_body_exited"]
 [connection signal="Confirm" from="Player" to="Enemy" method="_on_player_confirm"]
+[connection signal="Confirm" from="Player" to="Enemy2" method="_on_player_confirm"]
 [connection signal="Freedom" from="Player" to="Enemy" method="_on_player_freedom"]
+[connection signal="Freedom" from="Player" to="Enemy2" method="_on_player_freedom"]
 [connection signal="Intensity" from="Player" to="spotLightMeacnism/SpotLight3D" method="_on_player_intensity"]
 [connection signal="Intensity" from="Player" to="omniLightMecanism/OmniLight3D" method="_on_player_intensity"]
 [connection signal="LightBend" from="Player" to="." method="_on_player_light_bend"]
@@ -488,5 +521,6 @@ shape = SubResource("BoxShape3D_oohu4")
 [connection signal="Attack" from="Enemy" to="Player" method="_on_enemy_attack"]
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
 [connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]
+[connection signal="Attack" from="Enemy2" to="Player" method="_on_enemy_attack"]
 
 [editable path="BlenderImport"]

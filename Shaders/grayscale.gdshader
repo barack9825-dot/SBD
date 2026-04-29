@@ -1,6 +1,9 @@
 shader_type spatial;
+//#include "res://Shaders/include_1.gdshaderinc"
+
 
 global uniform vec3 player_pos;
+global uniform vec3 player_pos2;
 global uniform float sphere_size=3.0;
 varying vec3 world_vertex;
 uniform sampler2D my_texture;
@@ -13,7 +16,9 @@ void vertex() {
 
 void fragment() {
 	vec4 pixelColor=textureLod(my_texture,UV,0.0);
-	float min_dist =min(length(player_pos-world_vertex),sphere_size);
+	float player_dist_selected = min(length(player_pos-world_vertex),length(player_pos2-world_vertex));
+	float min_dist =min(player_dist_selected,sphere_size);
+	
 	float flashState=clamp(sphere_size-min_dist,0.0,1.0);
 	float brightness = (pixelColor.r+pixelColor.g+pixelColor.b)/3.0;
 	vec4 grayScale = vec4(brightness,brightness,brightness,pixelColor.a);

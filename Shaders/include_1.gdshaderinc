@@ -1,0 +1,1 @@
+uniform vec3 player_pos;
