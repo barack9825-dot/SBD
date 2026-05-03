@@ -91,15 +91,15 @@ textures/lossless_compression/force_png=true
 
 [shader_globals]
 
-sphere_size={
-"type": "float",
-"value": 3.0
-}
 player_pos={
 "type": "vec3",
 "value": Vector3(1, 0, -16)
 }
 player_pos2={
 "type": "vec3",
-"value": Vector3(0, 0, -2)
+"value": Vector3(0, 0, -3)
+}
+sphere_size={
+"type": "float",
+"value": 3.0
 }

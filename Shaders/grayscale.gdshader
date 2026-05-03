@@ -4,7 +4,7 @@ shader_type spatial;
 
 global uniform vec3 player_pos;
 global uniform vec3 player_pos2;
-global uniform float sphere_size=3.0;
+global uniform float sphere_size = 3.0;
 varying vec3 world_vertex;
 uniform sampler2D my_texture;
 uniform float value:hint_range(-1,10)=0.5;

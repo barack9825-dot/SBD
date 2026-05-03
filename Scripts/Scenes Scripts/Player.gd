@@ -10,9 +10,9 @@ extends Character
 
 signal Intensity(I,id)
 signal Purify(state)
-signal Freedom(myPosition)
+signal Freedom(my_position,enemy_id)
 signal LightBend(is_bending)
-signal Confirm(ans,position)
+signal Confirm(ans,position,id)
 
 ##Declaración de variables
 var can_climb         : bool    = false       #Variable para establecer el momento en que la animacion de escalar termina
@@ -24,10 +24,11 @@ var is_in_area        : bool    = false       #Variable para detectar si esta en
 var is_purifying      : bool    = false       #Permite al jugador activar la animación de purificar
 var near_enemy        : bool    = false       #Permite detectar si es hay un enemigo para poder purificarlo
 var running_speed     : float   = speed * 2   #Multiplicador de la velocidad corriendo
-var stealth_speed     : float   = speed * 0.5 #Multiplicador de la velocidad en sigilo
+var stealth_speed     : float   = speed * 1   #Multiplicador de la velocidad en sigilo
+var enemy_selected    : String                #Enemigo con el se está interactuando   
 var identify          : String                #Variable para identificar el tipo de nodo de luz con el que estamos intereactuando
 var screen_size       : Vector2               #Variable que almacena el tamaño de la pantalla            
-var enemy_near         : Vector3               #Para saber donde esta el enemigo que te esta purificando  
+var enemy_near        : Vector3               #Para saber donde esta el enemigo que te esta purificando  
 var path_position     : Vector3               #Para obtener la posición global del path
 var storaged_error    : Vector3               #Para la acción integral
 var tween             : Tween                 #Instancia del tween
@@ -245,7 +246,7 @@ func release():
 		
 		$DyingTime.stop()
 		
-		emit_signal("Freedom",position.z)
+		emit_signal("Freedom",position.z,enemy_selected)
 
 func motion(delta):
 	if !is_purifying:
@@ -335,14 +336,15 @@ func _on_area_3d_body_entered(body): if body.is_in_group("Enemy"): near_enemy = 
 
 func _on_area_3d_body_exited(body): if body.is_in_group("Enemy"): near_enemy = false
 
-func _on_enemy_attack(enemyPosition):
+func _on_enemy_attack(enemyPosition,id):
+	enemy_selected = id
 	enemy_near = enemyPosition
 	if !is_dashing:
 		is_being_absorbed = true
 	
 		$DyingTime.start(dyingTime)
 	
-		emit_signal("Confirm",true,position)
+		emit_signal("Confirm",true,position,enemy_selected)
 
 	else: emit_signal("Confirm",false)
 

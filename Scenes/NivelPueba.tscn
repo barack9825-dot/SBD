@@ -462,7 +462,7 @@ collision_mask = 12
 dyingTime = 3.0
 Jump_Speed = 5.0
 
-[node name="Enemy" parent="." instance=ExtResource("13_70t8y")]
+[node name="Enemy" parent="." groups=["Enemy#1"] instance=ExtResource("13_70t8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 0.62, -20.9918)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -496,7 +496,7 @@ collision_mask = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.357)
 shape = SubResource("BoxShape3D_oohu4")
 
-[node name="Enemy2" parent="." instance=ExtResource("13_70t8y")]
+[node name="Enemy2" parent="." groups=["Enemy#2"] instance=ExtResource("13_70t8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
 
 [connection signal="body_exited" from="MeshInstance3D2/Area3D3" to="." method="_on_area_3d_3_body_exited"]

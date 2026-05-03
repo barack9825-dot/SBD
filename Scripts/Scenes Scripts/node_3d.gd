@@ -25,9 +25,11 @@ func shader_assingment():
 
 ##Bucle jugable
 func _process(_delta):
+	if $Enemy:
+		RenderingServer.global_shader_parameter_set("player_pos",$Enemy.position)
 	
-	RenderingServer.global_shader_parameter_set("player_pos",$Enemy.position)
-	RenderingServer.global_shader_parameter_set("player_pos2",$Enemy2.position)
+	if $Enemy2:
+		RenderingServer.global_shader_parameter_set("player_pos2",$Enemy2.position)
 
 	
 	if activate_bend:
@@ -42,11 +44,11 @@ func _process(_delta):
 		
 		else:
 			spot_light.rotation = lerp(spotLightRotation,finalRotation,interpolate)
-			interpolate = clampf(interpolate - 4 * get_process_delta_time(),0,1)
+			interpolate         = clampf(interpolate - 4 * get_process_delta_time(),0,1)
 	
 	else: 
 		spot_light.rotation = lerp(spotLightRotation,finalRotation,interpolate)
-		interpolate = clampf(interpolate - 4 * get_process_delta_time(),0,1)
+		interpolate         = clampf(interpolate - 4 * get_process_delta_time(),0,1)
 
 
 ##Eventos

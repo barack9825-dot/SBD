@@ -11,9 +11,9 @@ extends Character
 ##Declaración de variables precargadas
 @onready var left          :RayCast3D = $RayCastLeft   ##Raycast de la izquierda para detectar enemigos a la izquiera
 @onready var right         :RayCast3D = $RayCastRight  ##Raycast de la izquierda para detectar enemigos a la derecha
-
+@onready var state               :AnimationNodeStateMachinePlayback =get_tree().get_first_node_in_group("Player").get_node("AnimationTree").get("parameters/playback")
 ##señales
-signal Attack(myPosition)
+signal Attack(myPosition,id)
 
 ##Declaración de variables internas
 var darkness            :bool  = false ##Para detectar intensidad de la luz
@@ -37,6 +37,7 @@ var interp_value        :float = 0.0   ##Valor para desacelerar cuando se ataca
 var speed_run           :float = 1     ##Velocidad de correr
 var speed_walk          :float = 0.5   ##Velocidad al caminar
 var selected_raycast    :RayCast3D
+
 var light
 
 
@@ -118,7 +119,7 @@ func attack_behavior():
 		distance = position.z - col.position.z
 		
 		if abs(distance) <= 0.3 && distance/axis < 0 && !enemy_is_dashing:
-			if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position)
+			if !playback.get_current_node() == "BackDash" && col.is_on_floor(): emit_signal("Attack",position,get_groups()[1])
 
 		player_position = col.position.z
 
@@ -132,26 +133,30 @@ func behavior():
 	
 	if  distance < 1 && !(playback.get_current_node() in ["Been_Pushed","Recover"]): 
 		playback.travel("Atack_2")
-
+		
 		is_atacking = true
-
+	
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
 	decoloration = lerp(3,0,progress_bar_value)
-	RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
+
+
 	if is_being_puryfied:
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
-
+		RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
 	else:
 		$Sprite_Progress_Bar.visible                       = false
 		#progress_bar_value = 0
 		#print("else")
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
+		if progress_bar_value != 0:
+			RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
-	
+
+
 func blind_spot() ->void:
 	if $Sprite3D.flip_h:
 		$RayCastLeft.target_position.z  = 2.37
@@ -176,12 +181,12 @@ func detect_colissions() -> bool:
 
 func get_colissions( Raycast:RayCast3D ) ->bool:
 	if Raycast.is_colliding():
-		var col = Raycast.get_collider()
-		if col.is_in_group("Player"): 
+		var col = Raycast.get_collider() as CharacterBody3D
+		if col.is_in_group("Player") && player_detector(col): 
 			selected_raycast = Raycast
 			return true
 		else: return false
-
+	
 	else: return false
 
 ##Arreglar esto, cuando el enemigo esté en idle se va a virar siempre para el mismo lado
@@ -227,10 +232,13 @@ func tween_func(top_speed,bottom_speed,duration,curve):
 	
 	tween.tween_method(func(interp_value):curve_func_tween(interp_value,top_speed,bottom_speed,curve),0.0,1.0,duration)
 
+func player_detector(player) ->bool:
+	#print((player.position.z - position.z)/axis)
+	return state.get_current_node()!="Sigilo" || ((player.position.z - position.z)/axis>0 && state.get_current_node()=="Sigilo")
 
 ##Bucle Jugable
 func _process(delta):
-
+	
 	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
@@ -260,14 +268,16 @@ func exit_omni_light_area(): is_in_area = false
 
 func _on_dying_timer_timeout():queue_free()
 
-func _on_player_confirm(ans,Playerposition): 
-	is_absorving = ans
-	axis         = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
+func _on_player_confirm(ans,Playerposition,id):
+	if id == get_groups()[1]: 
+		is_absorving = ans
+		axis         = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
 
-func _on_player_freedom(player_position):
-	is_atacking         = false
-	is_absorving        = false
-	has_been_pushed     = true
+func _on_player_freedom(player_position,id):
+	if id == get_groups()[1]: 
+		is_atacking         = false
+		is_absorving        = false
+		has_been_pushed     = true
 
 func _on_player_purify(state):
 	match state:
