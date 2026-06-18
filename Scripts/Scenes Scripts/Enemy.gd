@@ -139,21 +139,21 @@ func behavior():
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
-	decoloration = lerp(3,0,progress_bar_value)
-
-
 	if is_being_puryfied:
+		RenderingServer.global_shader_parameter_set("puryfing",true)
+		RenderingServer.global_shader_parameter_set("player_selected",position)
+
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
-		RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
+
+		RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
 	else:
+		RenderingServer.global_shader_parameter_set("puryfing",false)
+
 		$Sprite_Progress_Bar.visible                       = false
-		#progress_bar_value = 0
-		#print("else")
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
-		if progress_bar_value != 0:
-			RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
+		if progress_bar_value != 0: RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
 
 
@@ -279,7 +279,7 @@ func _on_player_freedom(player_position,id):
 		is_absorving        = false
 		has_been_pushed     = true
 
-func _on_player_purify(state):
+func _on_player_purify(state,id):
 	match state:
 		"start":	
 			$DyingTimer.start(dying_time)
