@@ -16,7 +16,11 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Dirty Room"
 run/main_scene="res://Scenes/NivelPueba.tscn"
+<<<<<<< HEAD
 config/features=PackedStringArray("4.7", "Forward Plus")
+=======
+config/features=PackedStringArray("4.6", "Forward Plus")
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 config/icon="res://icon.svg"
 
 [autoload]

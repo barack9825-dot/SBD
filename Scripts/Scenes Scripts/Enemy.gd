@@ -140,7 +140,11 @@ func behavior():
 
 func being_purified(delta)->void:
 	if is_being_puryfied:
+<<<<<<< HEAD
 		RenderingServer.global_shader_parameter_set("puryfing",true) #No lo estoy usando, pero ver si realmente hace falta cuando se pase en limpio
+=======
+		RenderingServer.global_shader_parameter_set("puryfing",true)
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 		RenderingServer.global_shader_parameter_set("player_selected",position)
 
 		$Sprite_Progress_Bar.visible                        = true
@@ -283,12 +287,18 @@ func _on_player_freedom(player_position,id):
 		has_been_pushed     = true
 
 func _on_player_purify(state,id):
+<<<<<<< HEAD
 	if get_groups().has(id):
 		match state:
 			"start":	
 				$DyingTimer.start(dying_time)
 				
 				is_being_puryfied = true
+=======
+	match state:
+		"start":	
+			$DyingTimer.start(dying_time)
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 			
 			"interrupt":
 				$DyingTimer.stop()

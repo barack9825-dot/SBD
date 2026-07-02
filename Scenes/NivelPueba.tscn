@@ -465,8 +465,15 @@ Jump_Speed = 5.0
 [node name="Enemy" parent="." unique_id=743240735 groups=["Enemy#1"] instance=ExtResource("13_70t8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 0.62, -20.9918)
 
+<<<<<<< HEAD
 [node name="Enemy2" parent="." unique_id=693163009 groups=["Enemy#2"] instance=ExtResource("13_70t8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
+=======
+[node name="Enemy2" parent="." groups=["Enemy#2"] instance=ExtResource("13_70t8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786687398]
 

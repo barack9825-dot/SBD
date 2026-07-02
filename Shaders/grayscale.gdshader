@@ -19,6 +19,7 @@ void vertex() {
 void fragment() {
 	float sphere_size;
 	vec4 pixelColor            = textureLod(my_texture,UV,0.0);
+<<<<<<< HEAD
 	float player_dist_selected = min(length(world_vertex-player_pos),length(world_vertex-player_pos2));
 	float player_dist_no_selected = max(length(world_vertex-player_pos),length(world_vertex-player_pos2));
 	float dist_min = length(world_vertex-player_selected)-player_dist_selected;
@@ -26,6 +27,13 @@ void fragment() {
 	if ( dist_min < 0.01 && player_dist_no_selected > 3.0)
 	{
 		sphere_size = 3.0 * (1.0 - purifyng_progress); 
+=======
+	float player_dist_selected = min(length(player_pos-world_vertex),length(player_pos2-world_vertex));
+	
+	if (puryfing && player_dist_selected == length(player_selected-world_vertex))
+	{
+		sphere_size = 3.0 * (1.0 - purifyng_progress);
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 	}
 	else
 	{

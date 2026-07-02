@@ -268,9 +268,13 @@ func motion(delta):
 ##Bucle jugable
 func _physics_process(delta) ->void:
 	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
+<<<<<<< HEAD
 	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: 
 		emit_signal("Purify","start",enemy_selected)
 
+=======
+	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start",enemy_selected)
+>>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
 	if Input.is_action_just_released("Purificar") && near_enemy: 
 		emit_signal("Purify","interrupt",enemy_selected)
