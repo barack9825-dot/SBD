@@ -1,11 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://ccq8hh1qdlwsc"]
+[gd_scene format=3 uid="uid://ccq8hh1qdlwsc"]
 
-[ext_resource type="Script" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_al807"]
+[ext_resource type="Script" uid="uid://br62evh7dm4rv" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_al807"]
 [ext_resource type="PackedScene" uid="uid://c6p6xxy54pwd1" path="res://Blender/BlenderCopy.tscn" id="3_rieqm"]
-[ext_resource type="Script" path="res://Scripts/Scenes Scripts/LightIntensityControl.gd" id="4_kjvlv"]
+[ext_resource type="Script" uid="uid://c4hqxwf25703g" path="res://Scripts/Scenes Scripts/LightIntensityControl.gd" id="4_kjvlv"]
 [ext_resource type="PackedScene" uid="uid://b281eehjp4h04" path="res://Blender/Jorge.blend" id="4_s4uax"]
-[ext_resource type="Script" path="res://Scripts/Scenes Scripts/PlayerCamera.gd" id="4_vqmmx"]
-[ext_resource type="Script" path="res://Scripts/Scenes Scripts/OmniLight3D.gd" id="5_5xkov"]
+[ext_resource type="Script" uid="uid://dfprtavalwacy" path="res://Scripts/Scenes Scripts/PlayerCamera.gd" id="4_vqmmx"]
+[ext_resource type="Script" uid="uid://boa7vel5nnt6m" path="res://Scripts/Scenes Scripts/OmniLight3D.gd" id="5_5xkov"]
 [ext_resource type="PackedScene" uid="uid://djb7df6hrunqe" path="res://Scenes/Player.tscn" id="5_atcrf"]
 [ext_resource type="AudioStream" uid="uid://uycm5wi66781" path="res://Assets/Audio/lost-soul_30sec-177569.mp3" id="6_bx5ev"]
 [ext_resource type="Texture2D" uid="uid://bx2okgt30so0d" path="res://Assets/fondo P.png" id="7_4oogf"]
@@ -53,18 +53,6 @@ corner_radius_top_right = 11
 corner_radius_bottom_right = 11
 corner_radius_bottom_left = 11
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5wr4"]
-bg_color = Color(0.917647, 0.415686, 0.470588, 1)
-border_width_left = 11
-border_width_top = 11
-border_width_right = 11
-border_width_bottom = 11
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phs1g"]
 bg_color = Color(0.572549, 0, 0, 1)
 border_width_left = 11
@@ -77,16 +65,28 @@ corner_radius_top_right = 11
 corner_radius_bottom_right = 11
 corner_radius_bottom_left = 11
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5wr4"]
+bg_color = Color(0.917647, 0.415686, 0.470588, 1)
+border_width_left = 11
+border_width_top = 11
+border_width_right = 11
+border_width_bottom = 11
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_oohu4"]
 size = Vector3(1, 1, 29.5197)
 
-[node name="Mundo" type="Node3D"]
+[node name="Mundo" type="Node3D" unique_id=1633441189]
 script = ExtResource("1_al807")
 
-[node name="BlenderImportCopy" parent="." instance=ExtResource("3_rieqm")]
+[node name="BlenderImportCopy" parent="." unique_id=319142881 instance=ExtResource("3_rieqm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.246, 0.007, 3.226)
 
-[node name="BlenderImport" parent="." instance=ExtResource("4_s4uax")]
+[node name="BlenderImport" parent="." unique_id=1579204076 instance=ExtResource("4_s4uax")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24598, 0.00681293, 3.22591)
 visible = false
 
@@ -294,84 +294,84 @@ layers = 8
 [node name="piso 3__007" parent="BlenderImport" index="105"]
 layers = 64
 
-[node name="FONDO" type="Sprite3D" parent="."]
+[node name="FONDO" type="Sprite3D" parent="." unique_id=1360150112]
 transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, -35.35, -1.838, -8.039)
 modulate = Color(0.494118, 0.494118, 0.494118, 1)
 texture = ExtResource("7_4oogf")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1519287592]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.27888, 0, 3.31302)
 collision_layer = 4
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1673983205]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.393765, -0.00415814, -11.3926)
 shape = SubResource("BoxShape3D_3i0yw")
 
-[node name="PlayerCamera" type="Camera3D" parent="." groups=["PlayerCamera"]]
+[node name="PlayerCamera" type="Camera3D" parent="." unique_id=1689850237 groups=["PlayerCamera"]]
 transform = Transform3D(-0.0279217, 0.062766, 0.997638, 0, 0.998027, -0.0627905, -0.99961, -0.00175322, -0.0278666, 12.6318, 1.838, -15.3327)
 keep_aspect = 0
 current = true
 fov = 49.6
 script = ExtResource("4_vqmmx")
 
-[node name="ZoneCamera" type="Camera3D" parent="."]
+[node name="ZoneCamera" type="Camera3D" parent="." unique_id=443448878]
 transform = Transform3D(-0.0279217, 0.062766, 0.997638, 0, 0.998027, -0.0627905, -0.99961, -0.00175322, -0.0278666, 12.632, 2.302, 0)
 keep_aspect = 0
 fov = 49.6
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=1464769372]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2384, 1.76746, -21.1859)
 light_color = Color(1, 1, 0.176471, 1)
 light_energy = 0.5
 omni_range = 4.12122
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=592840494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72824, 1.59414, -11.6269)
 mesh = SubResource("BoxMesh_e4asq")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" groups=["Plataforma"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1560148987 groups=["Plataforma"]]
 collision_layer = 4
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=969344449]
 shape = SubResource("ConcavePolygonShape3D_y0wej")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1924355358]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72824, 2.00087, -7.78197)
 mesh = SubResource("BoxMesh_qcmyy")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2" groups=["Plataforma"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2" unique_id=1435724853 groups=["Plataforma"]]
 collision_layer = 4
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D" unique_id=1250689943]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0238647)
 shape = SubResource("BoxShape3D_aq8mp")
 
-[node name="Area3D3" type="Area3D" parent="MeshInstance3D2"]
+[node name="Area3D3" type="Area3D" parent="MeshInstance3D2" unique_id=731582558]
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/Area3D3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/Area3D3" unique_id=1818894722]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_srfby")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=1013872276]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90937, 0.460278, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=522304250]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17088, 0.322329, 0)
 shape = SubResource("BoxShape3D_qswxn")
 
-[node name="spotLightMeacnism" type="Node3D" parent="."]
+[node name="spotLightMeacnism" type="Node3D" parent="." unique_id=2126001588]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.39703, 0.901927, -13.0327)
 
-[node name="Area3D2" type="Area3D" parent="spotLightMeacnism"]
+[node name="Area3D2" type="Area3D" parent="spotLightMeacnism" unique_id=1091507761]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.352852, -0.587283, -0.418094)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/Area3D2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/Area3D2" unique_id=137788514]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11156, 0.58618, -0.0110664)
 shape = SubResource("BoxShape3D_kqkjb")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism"]
+[node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism" unique_id=98873008]
 transform = Transform3D(0.958949, -0.00275673, 0.283567, -0.28358, -0.00932222, 0.958903, 3.35276e-08, -0.999953, -0.00972128, -0.174026, 0.777291, -2.89331)
 light_color = Color(1, 1, 0.478431, 1)
 light_energy = 1.9
@@ -381,93 +381,96 @@ spot_range = 3.36982
 spot_angle = 32.95
 script = ExtResource("4_kjvlv")
 
-[node name="LighArea" type="Area3D" parent="spotLightMeacnism/SpotLight3D"]
+[node name="LighArea" type="Area3D" parent="spotLightMeacnism/SpotLight3D" unique_id=1649668046]
 transform = Transform3D(0.951056, -6.96886e-10, -0.309017, 4.65661e-10, 0.999999, 0, 0.309017, -9.31323e-10, 0.951057, 0.268126, 0.00881386, -0.906648)
 collision_layer = 4
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/SpotLight3D/LighArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/SpotLight3D/LighArea" unique_id=1246068226]
 transform = Transform3D(0.999999, 0.000107418, -0.0013613, -0.000100757, 0.999988, 0.00489198, 0.00136181, -0.00489184, 0.999987, 4.05312e-06, 1.23978e-05, 0.138277)
 shape = SubResource("BoxShape3D_jiete")
 
-[node name="Trigger" type="Node3D" parent="spotLightMeacnism"]
+[node name="Trigger" type="Node3D" parent="spotLightMeacnism" unique_id=569384801]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.201807, -3.40939e-05, -0.279806)
 
-[node name="Sprite3D" type="Sprite3D" parent="spotLightMeacnism/Trigger"]
+[node name="Sprite3D" type="Sprite3D" parent="spotLightMeacnism/Trigger" unique_id=390201294]
 transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0.0586803, 0.0162812, -0.116955)
 texture = ExtResource("9_o4bpr")
 hframes = 2
 vframes = 4
 
-[node name="Label3D" type="Label3D" parent="spotLightMeacnism/Trigger"]
+[node name="Label3D" type="Label3D" parent="spotLightMeacnism/Trigger" unique_id=14573769]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.151045, 0.476392, 0.0820026)
 text = "Presiona X para
  disminuir intensidad y
  Z para aumentarla"
 
-[node name="omniLightMecanism" type="Node3D" parent="."]
+[node name="omniLightMecanism" type="Node3D" parent="." unique_id=1444853152]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="omniLightMecanism"]
+[node name="OmniLight3D" type="OmniLight3D" parent="omniLightMecanism" unique_id=151213326]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.154, 1.948, -1.996)
 light_color = Color(1, 1, 0.176471, 1)
 light_energy = 0.5
 omni_range = 2.8357
 script = ExtResource("5_5xkov")
 
-[node name="OmniLightArea" type="Area3D" parent="omniLightMecanism/OmniLight3D"]
+[node name="OmniLightArea" type="Area3D" parent="omniLightMecanism/OmniLight3D" unique_id=1968710705]
 collision_layer = 4
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/OmniLight3D/OmniLightArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/OmniLight3D/OmniLightArea" unique_id=1931383034]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0498, 0)
 shape = SubResource("BoxShape3D_rvye4")
 
-[node name="Trigger2" type="Node3D" parent="omniLightMecanism"]
+[node name="Trigger2" type="Node3D" parent="omniLightMecanism" unique_id=1149358978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.19522, 0.901893, -4.44996)
 
-[node name="Sprite3D" type="Sprite3D" parent="omniLightMecanism/Trigger2"]
+[node name="Sprite3D" type="Sprite3D" parent="omniLightMecanism/Trigger2" unique_id=1023867011]
 transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0.0586803, 0.0162812, -0.116955)
 texture = ExtResource("9_o4bpr")
 hframes = 2
 vframes = 4
 
-[node name="Label3D" type="Label3D" parent="omniLightMecanism/Trigger2"]
+[node name="Label3D" type="Label3D" parent="omniLightMecanism/Trigger2" unique_id=1113156770]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.151045, 0.476392, 0.0820026)
 text = "Presiona X para
  disminuir intensidad y
  Z para aumentarla"
 
-[node name="Area3D3" type="Area3D" parent="omniLightMecanism"]
+[node name="Area3D3" type="Area3D" parent="omniLightMecanism" unique_id=2057055379]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04417, 0.314644, -4.55045)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/Area3D3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="omniLightMecanism/Area3D3" unique_id=590577467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11156, 0.58618, -0.0110664)
 shape = SubResource("BoxShape3D_kqkjb")
 
-[node name="Collectable" parent="." instance=ExtResource("13_7xmxp")]
+[node name="Collectable" parent="." unique_id=2128242925 instance=ExtResource("13_7xmxp")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 0.62, 0)
 collision_layer = 8
 
-[node name="Collectable2" parent="." instance=ExtResource("13_7xmxp")]
+[node name="Collectable2" parent="." unique_id=660614506 instance=ExtResource("13_7xmxp")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 0.62, -6.98236)
 collision_layer = 8
 
-[node name="Collectable3" parent="." instance=ExtResource("13_7xmxp")]
+[node name="Collectable3" parent="." unique_id=2010015354 instance=ExtResource("13_7xmxp")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.055, 1.97086, -11.0937)
 collision_layer = 9
 
-[node name="Player" parent="." instance=ExtResource("5_atcrf")]
+[node name="Player" parent="." unique_id=1415417803 instance=ExtResource("5_atcrf")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.05, 0.62, -15.771)
 collision_mask = 12
 dyingTime = 3.0
 Jump_Speed = 5.0
 
-[node name="Enemy" parent="." groups=["Enemy#1"] instance=ExtResource("13_70t8y")]
+[node name="Enemy" parent="." unique_id=743240735 groups=["Enemy#1"] instance=ExtResource("13_70t8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 0.62, -20.9918)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Enemy2" parent="." unique_id=693163009 groups=["Enemy#2"] instance=ExtResource("13_70t8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
 
-[node name="Button" type="Button" parent="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786687398]
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=203838274]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -479,25 +482,22 @@ grow_horizontal = 0
 scale = Vector2(0.5, 0.5)
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_s3lo8")
-theme_override_styles/hover = SubResource("StyleBoxFlat_k5wr4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_phs1g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k5wr4")
 text = "X"
 
-[node name="FPScounter" parent="." instance=ExtResource("9_3vbba")]
+[node name="FPScounter" parent="." unique_id=891587151 instance=ExtResource("9_3vbba")]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2055231343]
 stream = ExtResource("6_bx5ev")
 
-[node name="Area3D2" type="Area3D" parent="."]
+[node name="Area3D2" type="Area3D" parent="." unique_id=275307137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.055, 0.699, -20.24)
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2" unique_id=684331297]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.357)
 shape = SubResource("BoxShape3D_oohu4")
-
-[node name="Enemy2" parent="." groups=["Enemy#2"] instance=ExtResource("13_70t8y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
 
 [connection signal="body_exited" from="MeshInstance3D2/Area3D3" to="." method="_on_area_3d_3_body_exited"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
@@ -518,9 +518,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 2.6762, -9.18778)
 [connection signal="Intensity" from="Player" to="omniLightMecanism/OmniLight3D" method="_on_player_intensity"]
 [connection signal="LightBend" from="Player" to="." method="_on_player_light_bend"]
 [connection signal="Purify" from="Player" to="Enemy" method="_on_player_purify"]
+[connection signal="Purify" from="Player" to="Enemy2" method="_on_player_purify"]
 [connection signal="Attack" from="Enemy" to="Player" method="_on_enemy_attack"]
+[connection signal="Attack" from="Enemy2" to="Player" method="_on_enemy_attack"]
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
 [connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]
-[connection signal="Attack" from="Enemy2" to="Player" method="_on_enemy_attack"]
 
 [editable path="BlenderImport"]

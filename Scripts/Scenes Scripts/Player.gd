@@ -1,7 +1,7 @@
 extends Character
 
 @export var dyingTime  : float = 5.0
-@export var speed      : float = 1.0                                                                     #Velocidad del jugador
+@export var speed      : float = 1.0          #Velocidad del jugador
 @export var inventory  : Inv
 @export var curve      : Curve = Curve.new()
 @export var curveClimb : Curve = Curve.new()
@@ -9,7 +9,7 @@ extends Character
 @export var Jump_Speed : float = 40
 
 signal Intensity(I,id)
-signal Purify(state)
+signal Purify(state,id)
 signal Freedom(my_position,enemy_id)
 signal LightBend(is_bending)
 signal Confirm(ans,position,id)
@@ -268,9 +268,13 @@ func motion(delta):
 ##Bucle jugable
 func _physics_process(delta) ->void:
 	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
-	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start")
+	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: 
+		emit_signal("Purify","start",enemy_selected)
+
 	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
-	if Input.is_action_just_released("Purificar") && near_enemy: emit_signal("Purify","interrupt")
+	if Input.is_action_just_released("Purificar") && near_enemy: 
+		emit_signal("Purify","interrupt",enemy_selected)
+
 	if is_being_absorbed && can_release: release()
 	
 	light_bend()
@@ -332,7 +336,11 @@ func _on_area_3d_3_body_entered(body):
 
 func _on_area_3d_3_body_exited(body): is_in_area = false
 
-func _on_area_3d_body_entered(body): if body.is_in_group("Enemy"): near_enemy = true
+func _on_area_3d_body_entered(body): 
+	if body.is_in_group("Enemy"): 
+		near_enemy = true
+		var player = body as CharacterBody3D
+		enemy_selected = player.get_groups()[1]
 
 func _on_area_3d_body_exited(body): if body.is_in_group("Enemy"): near_enemy = false
 

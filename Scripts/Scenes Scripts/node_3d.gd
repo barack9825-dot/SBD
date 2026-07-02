@@ -21,13 +21,13 @@ func shader_assingment():
 		for i in get_node("BlenderImportCopy").get_children() as Array[MeshInstance3D]:
 			if i.get_class() == "MeshInstance3D":
 				i.set_instance_shader_parameter("player_pos",enemy.position)
-				#print(i.get_instance_shader_parameter("player_pos"))
 
 ##Bucle jugable
 func _process(_delta):
 	if $Enemy:
 		RenderingServer.global_shader_parameter_set("player_pos",$Enemy.position)
-	
+	else:
+		RenderingServer.global_shader_parameter_set("player_pos",Vector3(1000,0,0))
 	if $Enemy2:
 		RenderingServer.global_shader_parameter_set("player_pos2",$Enemy2.position)
 

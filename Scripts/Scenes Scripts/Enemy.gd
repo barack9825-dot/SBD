@@ -139,21 +139,21 @@ func behavior():
 	else: playback.travel("Correr")
 
 func being_purified(delta)->void:
-	decoloration = lerp(3,0,progress_bar_value)
-
-
 	if is_being_puryfied:
+		RenderingServer.global_shader_parameter_set("puryfing",true) #No lo estoy usando, pero ver si realmente hace falta cuando se pase en limpio
+		RenderingServer.global_shader_parameter_set("player_selected",position)
+
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
-		RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
+
+		RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
 	else:
+		RenderingServer.global_shader_parameter_set("puryfing",false)
+
 		$Sprite_Progress_Bar.visible                       = false
-		#progress_bar_value = 0
-		#print("else")
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
-		if progress_bar_value != 0:
-			RenderingServer.global_shader_parameter_set("sphere_size",decoloration)
+		if progress_bar_value != 0: RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
 
 
@@ -233,7 +233,7 @@ func tween_func(top_speed,bottom_speed,duration,curve):
 	tween.tween_method(func(interp_value):curve_func_tween(interp_value,top_speed,bottom_speed,curve),0.0,1.0,duration)
 
 func player_detector(player) ->bool:
-	#print((player.position.z - position.z)/axis)
+
 	return state.get_current_node()!="Sigilo" || ((player.position.z - position.z)/axis>0 && state.get_current_node()=="Sigilo")
 
 ##Bucle Jugable
@@ -266,7 +266,10 @@ func exit_light_area(): is_in_area = false
 
 func exit_omni_light_area(): is_in_area = false
 
-func _on_dying_timer_timeout():queue_free()
+func _on_dying_timer_timeout(): 
+	queue_free()
+	RenderingServer.global_shader_parameter_set("player_selected",Vector3(1000,0,0))
+
 
 func _on_player_confirm(ans,Playerposition,id):
 	if id == get_groups()[1]: 
@@ -279,17 +282,18 @@ func _on_player_freedom(player_position,id):
 		is_absorving        = false
 		has_been_pushed     = true
 
-func _on_player_purify(state):
-	match state:
-		"start":	
-			$DyingTimer.start(dying_time)
+func _on_player_purify(state,id):
+	if get_groups().has(id):
+		match state:
+			"start":	
+				$DyingTimer.start(dying_time)
+				
+				is_being_puryfied = true
 			
-			is_being_puryfied = true
-		
-		"interrupt":
-			$DyingTimer.stop()
-			
-			is_being_puryfied = false
+			"interrupt":
+				$DyingTimer.stop()
+				
+				is_being_puryfied = false
 
 func _on_top_detector_body_entered(body):
 	if body.is_in_group("Player"):
