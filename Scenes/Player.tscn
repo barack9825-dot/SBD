@@ -1,4 +1,4 @@
-[gd_scene load_steps=119 format=3 uid="uid://djb7df6hrunqe"]
+[gd_scene format=3 uid="uid://djb7df6hrunqe"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes Scripts/Player.gd" id="1_utgpx"]
 [ext_resource type="Resource" uid="uid://c5m3dky0og1tm" path="res://Resources/Player_Inventory.tres" id="2_8j3a2"]
@@ -1183,23 +1183,23 @@ tracks/5/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gsvab"]
 _data = {
-"Aterrizar": SubResource("Animation_0vrly"),
-"Being_Absorbed": SubResource("Animation_o25u6"),
-"Caer": SubResource("Animation_ojejx"),
-"Caminar": SubResource("Animation_ulvm6"),
-"Caminar_Idle_Transition": SubResource("Animation_qbccq"),
-"Correr": SubResource("Animation_l34bn"),
-"Correr_Idle_Transition": SubResource("Animation_bdjcc"),
-"Dash": SubResource("Animation_ljuj7"),
-"Elevar": SubResource("Animation_cjyhh"),
-"Idle": SubResource("Animation_75jkd"),
-"Idle_Caminar_Transition": SubResource("Animation_d2jhl"),
-"Idle_Correr_Transition": SubResource("Animation_um0f5"),
-"Incorporar": SubResource("Animation_u7yyn"),
-"Liberarse": SubResource("Animation_do54x"),
-"RESET": SubResource("Animation_qgu5s"),
-"Sigilo": SubResource("Animation_h7aj4"),
-"Subir": SubResource("Animation_g30gx")
+&"Aterrizar": SubResource("Animation_0vrly"),
+&"Being_Absorbed": SubResource("Animation_o25u6"),
+&"Caer": SubResource("Animation_ojejx"),
+&"Caminar": SubResource("Animation_ulvm6"),
+&"Caminar_Idle_Transition": SubResource("Animation_qbccq"),
+&"Correr": SubResource("Animation_l34bn"),
+&"Correr_Idle_Transition": SubResource("Animation_bdjcc"),
+&"Dash": SubResource("Animation_ljuj7"),
+&"Elevar": SubResource("Animation_cjyhh"),
+&"Idle": SubResource("Animation_75jkd"),
+&"Idle_Caminar_Transition": SubResource("Animation_d2jhl"),
+&"Idle_Correr_Transition": SubResource("Animation_um0f5"),
+&"Incorporar": SubResource("Animation_u7yyn"),
+&"Liberarse": SubResource("Animation_do54x"),
+&"RESET": SubResource("Animation_qgu5s"),
+&"Sigilo": SubResource("Animation_h7aj4"),
+&"Subir": SubResource("Animation_g30gx")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iljp4"]
@@ -1440,15 +1440,14 @@ _data = {
 }
 point_count = 6
 
-[node name="Player" type="CharacterBody3D" groups=["Player"]]
+[node name="Player" type="CharacterBody3D" unique_id=601352463 groups=["Player"]]
 collision_mask = 4
 script = ExtResource("1_utgpx")
-dyingTime = 10.0
 inventory = ExtResource("2_8j3a2")
 curve = SubResource("Curve_m87gy")
 curveClimb = SubResource("Curve_xxbdd")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1575952202]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 layers = 2
 shaded = true
@@ -1458,50 +1457,45 @@ hframes = 4
 vframes = 4
 region_rect = Rect2(4893, 4979.82, 424.545, 228.182)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=579484737]
 shape = SubResource("BoxShape3D_y63nx")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_gsvab")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=634786362]
+libraries/ = SubResource("AnimationLibrary_gsvab")
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_gsvab")
-}
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1874809821]
 tree_root = SubResource("AnimationNodeStateMachine_slodo")
 anim_player = NodePath("../AnimationPlayer")
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1137575748]
 target_position = Vector3(0.25, 0, 0)
 collision_mask = 4
 
-[node name="Marker3D" type="Marker3D" parent="."]
+[node name="Marker3D" type="Marker3D" parent="." unique_id=180771952]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.223933, 0, 0)
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=1873511443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.622809, 0, 0)
 collision_layer = 4
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1297640125]
 shape = SubResource("BoxShape3D_r5qb7")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=891894192]
 
-[node name="Inventory" parent="CanvasLayer" instance=ExtResource("13_fm3lf")]
+[node name="Inventory" parent="CanvasLayer" unique_id=1248054205 instance=ExtResource("13_fm3lf")]
 metadata/_edit_use_anchors_ = true
 
-[node name="DyingTime" type="Timer" parent="."]
+[node name="DyingTime" type="Timer" parent="." unique_id=819877440]
 
-[node name="Cooldown" type="Timer" parent="."]
+[node name="Cooldown" type="Timer" parent="." unique_id=1279721070]
 
-[node name="Path3D" type="Path3D" parent="."]
+[node name="Path3D" type="Path3D" parent="." unique_id=426772027]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 curve = SubResource("Curve3D_s01t8")
 
-[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D" unique_id=1739188508]
 rotation_mode = 0
 loop = false
 

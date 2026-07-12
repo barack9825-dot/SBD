@@ -138,27 +138,28 @@ func behavior():
 	
 	else: playback.travel("Correr")
 
-func being_purified(delta)->void:
+func being_puryfied(delta)->void:
 	if is_being_puryfied:
-<<<<<<< HEAD
-		RenderingServer.global_shader_parameter_set("puryfing",true) #No lo estoy usando, pero ver si realmente hace falta cuando se pase en limpio
-=======
-		RenderingServer.global_shader_parameter_set("puryfing",true)
->>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
+
+		RenderingServer.global_shader_parameter_set("purifying",true) #No lo estoy usando, pero ver si realmente hace falta cuando se pase en limpio
+
 		RenderingServer.global_shader_parameter_set("player_selected",position)
 
 		$Sprite_Progress_Bar.visible                        = true
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value  = lerp(0,100,progress_bar_value)
 		progress_bar_value                                 += 1/dying_time * delta 
 
-		RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
+		RenderingServer.global_shader_parameter_set("purifying_progress",progress_bar_value)
 	else:
-		RenderingServer.global_shader_parameter_set("puryfing",false)
+		RenderingServer.global_shader_parameter_set("purifying",false)
 
-		$Sprite_Progress_Bar.visible                       = false
+		
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
-		if progress_bar_value != 0: RenderingServer.global_shader_parameter_set("purifyng_progress",progress_bar_value)
-		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = 0
+		#print(progress_bar_value)
+		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = lerp(0,100,progress_bar_value)
+		if progress_bar_value != 0: RenderingServer.global_shader_parameter_set("purifying_progress",progress_bar_value)
+		else: $Sprite_Progress_Bar.visible = false
+
 
 
 func blind_spot() ->void:
@@ -240,13 +241,13 @@ func player_detector(player) ->bool:
 
 	return state.get_current_node()!="Sigilo" || ((player.position.z - position.z)/axis>0 && state.get_current_node()=="Sigilo")
 
-##Bucle Jugable
+#Bucle Jugable
 func _process(delta):
 	
 	if is_in_area: darkness = light.light_energy <= 1.8
 	else: darkness = false
 	
-	being_purified(delta)
+	being_puryfied(delta)
 	
 	if !is_being_puryfied && (!is_in_area || (is_in_area && darkness)): movement(delta)
 	else: 
@@ -257,7 +258,7 @@ func _process(delta):
 	if !$MemoryTimer.is_stopped():checkPlayer()
 
 
-##Eventos
+#Eventos
 func enter_light_area(light_entered:SpotLight3D):
 	is_in_area   = true
 	light        = light_entered
@@ -280,25 +281,20 @@ func _on_player_confirm(ans,Playerposition,id):
 		is_absorving = ans
 		axis         = (Playerposition.z-position.z)/abs(Playerposition.z-position.z)
 
-func _on_player_freedom(player_position,id):
+func _on_player_freedom(_player_position,id):
 	if id == get_groups()[1]: 
 		is_atacking         = false
 		is_absorving        = false
 		has_been_pushed     = true
 
 func _on_player_purify(state,id):
-<<<<<<< HEAD
+
 	if get_groups().has(id):
 		match state:
-			"start":	
+			"start":
 				$DyingTimer.start(dying_time)
 				
 				is_being_puryfied = true
-=======
-	match state:
-		"start":	
-			$DyingTimer.start(dying_time)
->>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
 			
 			"interrupt":
 				$DyingTimer.stop()

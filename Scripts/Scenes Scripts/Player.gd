@@ -1,12 +1,12 @@
 extends Character
 
 @export var dyingTime  : float = 5.0
-@export var speed      : float = 1.0          #Velocidad del jugador
-@export var inventory  : Inv
+@export var speed      : float = 1.0          ##Velocidad del jugador
+@export var inventory  : Inv                  ## Inventario del jugador
 @export var curve      : Curve = Curve.new()
 @export var curveClimb : Curve = Curve.new()
 @export var interp     : float = 0.0 
-@export var Jump_Speed : float = 40
+@export var Jump_Speed : float = 40           ##Fuerza de salto
 
 signal Intensity(I,id)
 signal Purify(state,id)
@@ -14,28 +14,28 @@ signal Freedom(my_position,enemy_id)
 signal LightBend(is_bending)
 signal Confirm(ans,position,id)
 
-##Declaración de variables
-var can_climb         : bool    = false       #Variable para establecer el momento en que la animacion de escalar termina
-var can_dash          : bool    = true        #Variable para establecer el momento del esquive   
-var can_release       : bool    = true        #Variable para poder liberarse del agarre
-var is_being_absorbed : bool    = false       #Variable para saber si esta siendo purificado
-var is_dashing        : bool    = false       #Variable para saber si esta esquivando
-var is_in_area        : bool    = false       #Variable para detectar si esta en el area de encendido y apagado
-var is_purifying      : bool    = false       #Permite al jugador activar la animación de purificar
-var near_enemy        : bool    = false       #Permite detectar si es hay un enemigo para poder purificarlo
-var running_speed     : float   = speed * 2   #Multiplicador de la velocidad corriendo
-var stealth_speed     : float   = speed * 1   #Multiplicador de la velocidad en sigilo
-var enemy_selected    : String                #Enemigo con el se está interactuando   
-var identify          : String                #Variable para identificar el tipo de nodo de luz con el que estamos intereactuando
-var screen_size       : Vector2               #Variable que almacena el tamaño de la pantalla            
-var enemy_near        : Vector3               #Para saber donde esta el enemigo que te esta purificando  
-var path_position     : Vector3               #Para obtener la posición global del path
-var storaged_error    : Vector3               #Para la acción integral
-var tween             : Tween                 #Instancia del tween
-##Declaración de constantes
+#Declaración de variables
+var can_climb         : bool    = false       ##Variable para establecer el momento en que la animacion de escalar termina
+var can_dash          : bool    = true        ##Variable para establecer el momento del esquive   
+var can_release       : bool    = true        ##Variable para poder liberarse del agarre
+var is_being_absorbed : bool    = false       ##Variable para saber si esta siendo purificado
+var is_dashing        : bool    = false       ##Variable para saber si esta esquivando
+var is_in_area        : bool    = false       ##Variable para detectar si esta en el area de encendido y apagado
+var is_purifying      : bool    = false       ##Permite al jugador activar la animación de purificar
+var near_enemy        : bool    = false       ##Permite detectar si es hay un enemigo para poder purificarlo
+var running_speed     : float   = speed * 2   ##Multiplicador de la velocidad corriendo
+var stealth_speed     : float   = speed * 1   ##Multiplicador de la velocidad en sigilo
+var enemy_selected    : String                ##Enemigo con el se está interactuando   
+var identify          : String                ##Variable para identificar el tipo de nodo de luz con el que estamos intereactuando
+var screen_size       : Vector2               ##Variable que almacena el tamaño de la pantalla            
+var enemy_near        : Vector3               ##Para saber donde esta el enemigo que te esta purificando  
+var path_position     : Vector3               ##Para obtener la posición global del path
+var storaged_error    : Vector3               ##Para la acción integral
+var tween             : Tween                 ##Instancia del tween
+#Declaración de constantes
 const Gravity = 15 ##Constante para la gravedad
 
-##Animaciones
+#Animaciones
 var Animations : Dictionary = {
 	'Idle':
 		func():
@@ -136,7 +136,7 @@ var Animations : Dictionary = {
 			playback.travel(ground_motion()),
 }
 
-##Inicialización
+#Inicialización
 func _ready() ->void:
 	playback.start("Idle")
 	raycast_target                      = $RayCast3D.target_position.x
@@ -146,14 +146,13 @@ func _ready() ->void:
 	$CanvasLayer/Inventory.position     = Vector2( 250, screen_size.y - 250)
 	storaged_error                      = Vector3.ZERO
 
-##Lógica de obtencón de dirección
-func get_axis() ->int:
-	##Función para obtener la direccion en la que se desea que el jugador mire
+
+func get_axis() ->int: ##Lógica de obtencón de dirección
 	axis = int(Input.is_action_pressed("ui_right")) - int(Input.is_action_pressed("ui_left"))
 	return axis
 
 
-##Funciones del bucle jugable
+#Funciones del bucle jugable
 func ground_motion() ->String: ##Función para establecer las condiciones en las animaciones terrestres
 	if is_on_floor():
 		can_climb = true ##OJO veriicar si es necesario la condicion is_on_floor
@@ -223,11 +222,11 @@ func impulse(to_speed:float, time:float, displacement:float) ->float:
 func jump_modulator(frame) ->void:
 	if playback.get_current_node() != "Subir":
 		if !is_on_floor():
-			if !Input.is_action_pressed("ui_accept"): velocity.y -= Gravity/2 * 1.5  * frame
-			else: velocity.y -= Gravity/2 * frame
+			if !Input.is_action_pressed("ui_accept"): velocity.y -= Gravity/2.0 * 1.5  * frame
+			else: velocity.y -= Gravity/2.0 * frame
 
-func IntesityEmitter() ->void:
-	if is_in_area:
+func intesity_emitter() ->void:
+	if is_in_area && !is_being_absorbed:
 		if Input.is_action_pressed("X"): emit_signal("Intensity","x",identify)
 		if Input.is_action_pressed("Z"): emit_signal("Intensity","z",identify)
 
@@ -265,30 +264,26 @@ func motion(delta):
 	climb()
 
 
-##Bucle jugable
+#Bucle jugable
 func _physics_process(delta) ->void:
+	
+	#print($DyingTime.time_left)
 	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
-<<<<<<< HEAD
-	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: 
-		emit_signal("Purify","start",enemy_selected)
-
-=======
+	
+	#Lógica de purificación
 	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start",enemy_selected)
->>>>>>> 2fa13d866e2d534c300109eaab58e6073926ef0e
+	if Input.is_action_just_released("Purificar") && near_enemy: emit_signal("Purify","interrupt",enemy_selected)
 	is_purifying = Input.is_action_pressed("Purificar") && near_enemy
-	if Input.is_action_just_released("Purificar") && near_enemy: 
-		emit_signal("Purify","interrupt",enemy_selected)
-
 	if is_being_absorbed && can_release: release()
 	
 	light_bend()
 	
 	motion(delta)
 	
-	IntesityEmitter()
+	intesity_emitter()
 
 
-##Funciones auxiliares
+#Funciones auxiliares
 func tween_func(distance,from,duration):
 	
 	reset_tween()
@@ -316,11 +311,11 @@ func curveFuncX(t,distance,from):
 func curveFuncY(t,distance,from):
 	position.y = lerp(from,from - distance,curve.sample(t))
 
-func curveFuncT(progRatio,t):
+func curveFuncT(_progRatio,t):
 	$Path3D/PathFollow3D.progress_ratio = lerp(0.0,1.0,curveClimb.sample(t))
 
 
-##Eventos 
+#Eventos 
 func endDashing():
 	is_dashing = false
 	
@@ -328,22 +323,23 @@ func endDashing():
 	
 	can_dash = false
 
-func _on_area_3d_2_body_entered(body):
+func _on_area_3d_2_body_entered(_body):
 	is_in_area = true
 	identify   = "spotlight"
 
-func _on_area_3d_2_body_exited(body):is_in_area = false
+func _on_area_3d_2_body_exited(_body):is_in_area = false
 
-func _on_area_3d_3_body_entered(body):
+func _on_area_3d_3_body_entered(_body):
 	is_in_area = true
 	identify   = "omnilight"
 
-func _on_area_3d_3_body_exited(body): is_in_area = false
+func _on_area_3d_3_body_exited(_body): is_in_area = false
 
 func _on_area_3d_body_entered(body): 
 	if body.is_in_group("Enemy"): 
 		near_enemy = true
 		var player = body as CharacterBody3D
+		#print(player.get_groups()[1])
 		enemy_selected = player.get_groups()[1]
 
 func _on_area_3d_body_exited(body): if body.is_in_group("Enemy"): near_enemy = false
@@ -355,12 +351,12 @@ func _on_enemy_attack(enemyPosition,id):
 		is_being_absorbed = true
 	
 		$DyingTime.start(dyingTime)
-	
+
 		emit_signal("Confirm",true,position,enemy_selected)
 
 	else: emit_signal("Confirm",false)
 
-func _on_dying_time_timeout():get_tree().quit()
+func _on_dying_time_timeout(): get_tree().quit()
 
 func _on_cooldown_timeout():
 	can_dash = true

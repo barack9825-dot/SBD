@@ -14,7 +14,7 @@ var spotLightRotation : Vector3 = Vector3.ZERO ##Para obtener la rotación inici
 ##Inicialización
 func _ready():
 	spotLightRotation = spot_light.rotation
-	RenderingServer.global_shader_parameter_add("player_pos2",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
+#	RenderingServer.global_shader_parameter_add("player_pos2",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	#$AudioStreamPlayer.play()
 
 func shader_assingment():
@@ -30,6 +30,8 @@ func _process(_delta):
 		RenderingServer.global_shader_parameter_set("player_pos",Vector3(1000,0,0))
 	if $Enemy2:
 		RenderingServer.global_shader_parameter_set("player_pos2",$Enemy2.position)
+	else:
+		RenderingServer.global_shader_parameter_set("player_pos2",Vector3(1000,0,0))
 
 	
 	if activate_bend:
@@ -72,4 +74,5 @@ func CurveFuncLigh():
 
 
 func _on_area_3d_3_body_exited(body):
+	print("He left")
 	if body.has_method('turn'): body.turn()

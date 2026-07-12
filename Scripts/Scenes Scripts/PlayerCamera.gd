@@ -30,8 +30,9 @@ func updatePos():
 
 
 ##Bucle Jugable
-func _process(delta):
+func _process(_delta):
 	if followPlayer: updatePos()
+
 
 func _on_player_follow_camera(confirm):
 	followPlayer = confirm

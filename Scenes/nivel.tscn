@@ -1,0 +1,196 @@
+[gd_scene format=3 uid="uid://dj26osuamrx7p"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/node_3d.gd" id="1_dgjcf"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/PlayerCamera.gd" id="2_ey8ns"]
+[ext_resource type="PackedScene" uid="uid://djb7df6hrunqe" path="res://Scenes/Player.tscn" id="3_5xkr0"]
+[ext_resource type="Texture2D" uid="uid://cw5wkt4pykyal" path="res://Blender/textures/fondo.png" id="4_5xkr0"]
+[ext_resource type="PackedScene" uid="uid://c6p6xxy54pwd1" path="res://Blender/BlenderCopy.tscn" id="5_bj26p"]
+[ext_resource type="PackedScene" uid="uid://cl6uvqgumv42v" path="res://Scenes/Enemy.tscn" id="6_ly74u"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/OmniLight3D.gd" id="7_l6yf2"]
+[ext_resource type="Texture2D" uid="uid://ctq6bhodhdvdy" path="res://Assets/OIP.jpeg" id="8_ajbqy"]
+[ext_resource type="Script" path="res://Scripts/Scenes Scripts/LightIntensityControl.gd" id="8_l6yf2"]
+[ext_resource type="PackedScene" uid="uid://cbnhj6gv5qup2" path="res://Scenes/collectable.tscn" id="10_fhcna"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dbcgh"]
+size = Vector3(1, 1, 47.62903)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dbcgh"]
+size = Vector3(1, 0.15, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rpntr"]
+size = Vector3(1, 0.15, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rpntr"]
+size = Vector3(1, 0.15, 5.0779877)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ika1g"]
+size = Vector3(1, 0.15, 5.0779877)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2wc8j"]
+size = Vector3(1, 1, 4.118164)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h2bki"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_umyhm"]
+size = Vector3(1, 2.0283203, 3.076416)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tdfwe"]
+size = Vector3(1, 1, 0.96899414)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dbcgh"]
+radius = 2.18127
+
+[node name="Nivel" type="Node3D" unique_id=1559087209]
+script = ExtResource("1_dgjcf")
+
+[node name="Escenario" parent="." unique_id=1971279554 instance=ExtResource("5_bj26p")]
+
+[node name="Fondo" type="Sprite3D" parent="." unique_id=1066003415]
+transform = Transform3D(-6.556708e-07, 0, 15, 0, 15, 0, -15, 0, -6.556708e-07, -33.11143, 0, -12.406418)
+visible = false
+texture = ExtResource("4_5xkr0")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1214906147]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.978, 1.584, -14.876)
+keep_aspect = 0
+current = true
+fov = 61.1
+script = ExtResource("2_ey8ns")
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=815463114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, -0.475, 0)
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=223972876]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.630798)
+shape = SubResource("BoxShape3D_dbcgh")
+
+[node name="Plattform" type="StaticBody3D" parent="." unique_id=478361909 groups=["Plataforma"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55648184, 1.7129037, -12.714937)
+collision_layer = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform" unique_id=1090832983]
+mesh = SubResource("BoxMesh_dbcgh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform" unique_id=829610239]
+shape = SubResource("BoxShape3D_rpntr")
+
+[node name="Plattform 2" type="StaticBody3D" parent="." unique_id=98844803 groups=["Plataforma"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55648184, 2.5308132, -8.470251)
+collision_layer = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform 2" unique_id=260636579]
+mesh = SubResource("BoxMesh_rpntr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform 2" unique_id=224334187]
+shape = SubResource("BoxShape3D_ika1g")
+
+[node name="RouteArea" type="Area3D" parent="." unique_id=1691754046]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, 3.327, -8.47)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RouteArea" unique_id=1957388124]
+shape = SubResource("BoxShape3D_2wc8j")
+
+[node name="spotLightMeacnism" type="Node3D" parent="." unique_id=782226572]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815529, 1.487503, -19.2721)
+script = ExtResource("8_l6yf2")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="spotLightMeacnism" unique_id=1410575526]
+transform = Transform3D(0.9840526, 7.77528e-09, -0.17787765, 0.17787765, -4.3014307e-08, 0.9840526, 0, -1, -4.3711392e-08, 0.44696307, 0.82008076, 0.089092255)
+light_color = Color(1, 1, 0.007843138, 1)
+
+[node name="Sprite3D" type="Sprite3D" parent="spotLightMeacnism" unique_id=1531364618]
+transform = Transform3D(-1.0927847e-08, 0, 0.25, 0, 0.25, 0, -0.25, 0, -1.0927847e-08, 0, -0.93591964, 2.3142166)
+texture = ExtResource("8_ajbqy")
+hframes = 2
+vframes = 3
+
+[node name="Label3D" type="Label3D" parent="spotLightMeacnism" unique_id=1947574008]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.022, 2.314)
+text = "Presiona x para aumentar 
+la intensidad de la luz y 
+z para disminuirla"
+
+[node name="InterruptorArea" type="Area3D" parent="spotLightMeacnism" unique_id=1472742331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.93591964, 2.3142166)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/InterruptorArea" unique_id=628892273]
+shape = SubResource("BoxShape3D_h2bki")
+
+[node name="LightArea" type="Area3D" parent="spotLightMeacnism" unique_id=1323277511]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spotLightMeacnism/LightArea" unique_id=441714795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.51416016, 0.12438965)
+shape = SubResource("BoxShape3D_umyhm")
+
+[node name="OmnilightMecanism" type="Node3D" parent="." unique_id=765749858]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, 1.8758981, -5.1898136)
+script = ExtResource("7_l6yf2")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="OmnilightMecanism" unique_id=1267905437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21144807, 0.08251667, -0.036824703)
+light_color = Color(1, 1, 0, 1)
+
+[node name="Sprite3D2" type="Sprite3D" parent="OmnilightMecanism" unique_id=724639309]
+transform = Transform3D(-1.0927847e-08, 0, 0.25, 0, 0.25, 0, -0.25, 0, -1.0927847e-08, 0.080528975, -1.3243147, 1.2606201)
+texture = ExtResource("8_ajbqy")
+hframes = 2
+vframes = 3
+
+[node name="Label3D2" type="Label3D" parent="OmnilightMecanism" unique_id=913803759]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.080528975, -0.41039503, 1.2604027)
+text = "Presiona x para aumentar 
+la intensidad de la luz y 
+z para disminuirla"
+
+[node name="InterruptorArea2" type="Area3D" parent="OmnilightMecanism" unique_id=1927650619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.080528975, -1.3243147, 1.2606201)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OmnilightMecanism/InterruptorArea2" unique_id=1900552250]
+shape = SubResource("BoxShape3D_tdfwe")
+
+[node name="Lightarea2" type="Area3D" parent="OmnilightMecanism" unique_id=1602443890]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OmnilightMecanism/Lightarea2" unique_id=1652530973]
+shape = SubResource("SphereShape3D_dbcgh")
+
+[node name="Player" parent="." unique_id=1856983747 instance=ExtResource("3_5xkr0")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 0.620409, -18.7447)
+dyingTime = 2.9
+Jump_Speed = 6.0
+
+[node name="Enemy" parent="." unique_id=262732383 groups=["Enemy1"] instance=ExtResource("6_ly74u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.734957, 0.620409, -23.17309)
+
+[node name="Enemy2" parent="." unique_id=1401144731 groups=["Enemy2"] instance=ExtResource("6_ly74u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.734957, 3.327406, -8.731447)
+
+[node name="Collectable" parent="." unique_id=932186142 instance=ExtResource("10_fhcna")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 0.620409, -12.236271)
+
+[node name="Collectable2" parent="." unique_id=1485026872 instance=ExtResource("10_fhcna")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 0.620409, -10.070351)
+
+[connection signal="body_exited" from="RouteArea" to="." method="_on_area_3d_3_body_exited"]
+[connection signal="body_entered" from="spotLightMeacnism/InterruptorArea" to="Player" method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="spotLightMeacnism/InterruptorArea" to="Player" method="_on_area_3d_2_body_exited"]
+[connection signal="body_entered" from="spotLightMeacnism/LightArea" to="spotLightMeacnism" method="_on_ligh_area_body_entered"]
+[connection signal="body_exited" from="spotLightMeacnism/LightArea" to="spotLightMeacnism" method="_on_ligh_area_body_exited"]
+[connection signal="body_entered" from="OmnilightMecanism/InterruptorArea2" to="Player" method="_on_area_3d_3_body_entered"]
+[connection signal="body_exited" from="OmnilightMecanism/InterruptorArea2" to="Player" method="_on_area_3d_3_body_exited"]
+[connection signal="body_entered" from="OmnilightMecanism/Lightarea2" to="OmnilightMecanism" method="_on_omni_light_area_body_entered"]
+[connection signal="body_exited" from="OmnilightMecanism/Lightarea2" to="OmnilightMecanism" method="_on_omni_light_area_body_exited"]
+[connection signal="Confirm" from="Player" to="Enemy" method="_on_player_confirm"]
+[connection signal="Confirm" from="Player" to="Enemy2" method="_on_player_confirm"]
+[connection signal="Freedom" from="Player" to="Enemy" method="_on_player_freedom"]
+[connection signal="Freedom" from="Player" to="Enemy2" method="_on_player_freedom"]
+[connection signal="Intensity" from="Player" to="spotLightMeacnism" method="_on_player_intensity"]
+[connection signal="Intensity" from="Player" to="OmnilightMecanism" method="_on_player_intensity"]
+[connection signal="Purify" from="Player" to="Enemy" method="_on_player_purify"]
+[connection signal="Purify" from="Player" to="Enemy2" method="_on_player_purify"]
+[connection signal="Attack" from="Enemy" to="Player" method="_on_enemy_attack"]
+[connection signal="Attack" from="Enemy2" to="Player" method="_on_enemy_attack"]

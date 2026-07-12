@@ -2,7 +2,7 @@ extends Resource
 
 class_name Inv
 
-signal update	
+signal update
 
 @export var slots: Array[InvSlot]
 
