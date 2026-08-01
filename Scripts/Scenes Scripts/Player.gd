@@ -20,6 +20,7 @@ var can_dash          : bool    = true        ##Variable para establecer el mome
 var can_release       : bool    = true        ##Variable para poder liberarse del agarre
 var is_being_absorbed : bool    = false       ##Variable para saber si esta siendo purificado
 var is_dashing        : bool    = false       ##Variable para saber si esta esquivando
+var is_crawling       : bool    = false       ##Variable para saber si se está arrastrando
 var is_in_area        : bool    = false       ##Variable para detectar si esta en el area de encendido y apagado
 var is_purifying      : bool    = false       ##Permite al jugador activar la animación de purificar
 var is_in_edge        : bool    = false       ##Variable para detectar si esta en el borde
@@ -138,7 +139,12 @@ var Animations : Dictionary = {
 	'Unbalanced':
 		func():
 			velocity.z = 0
-			playback.travel(ground_motion())
+			playback.travel(ground_motion()),
+	'Crawl':
+		func():
+			velocity.z = -get_axis() * stealth_speed
+			playback.travel(ground_motion()),
+			
 }
 
 #Inicialización
@@ -170,17 +176,19 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 			return "Elevar"
 		
 		if get_axis() != 0:
-			if Input.is_action_pressed("Correr"):
-				if Input.is_action_just_pressed("Dash") && playback.get_current_node()=="Correr":
-					if can_dash:
-						var duration = $AnimationPlayer.get_animation("Dash").length
-						tween_func(1,position.z,duration)
-						return "Dash"
+			if is_crawling: return "Crawl"
+			else:
+				if Input.is_action_pressed("Correr"):
+					if Input.is_action_just_pressed("Dash") && playback.get_current_node()=="Correr":
+						if can_dash:
+							var duration = $AnimationPlayer.get_animation("Dash").length
+							tween_func(1,position.z,duration)
+							return "Dash"
+					
+					return "Correr"
 				
-				return "Correr"
-			
-			elif Input.is_action_pressed("Sigilo"): return "Sigilo"
-			else                                  : return "Caminar"
+				elif Input.is_action_pressed("Sigilo"): return "Sigilo"
+				else                                  : return "Caminar"
 		
 		else: return "Idle"
 		
@@ -267,9 +275,10 @@ func release():
 		is_being_absorbed = false
 		interp            = 0.0
 		
-		playback.travel("Idle")
-		
+		playback.travel("Crawl")
+		is_crawling = true
 		$DyingTime.stop()
+		$CrawlingTimer.start()
 		
 		emit_signal("Freedom",position.z,enemy_selected)
 
@@ -410,3 +419,7 @@ func _on_balance_time_timeout() -> void:
 	set_collision_mask_value(4,false)
 	$BalanceTime.stop()
 	is_in_edge = false
+
+
+func _on_crawling_timer_timeout() -> void:
+	is_crawling = false

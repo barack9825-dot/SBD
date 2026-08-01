@@ -155,7 +155,7 @@ func being_puryfied(delta)->void:
 
 		
 		progress_bar_value                                 = clampf(progress_bar_value- 1/dying_time * delta,0,1)
-		#print(progress_bar_value)
+
 		$Sprite_Progress_Bar/SubViewport/ProgressBar.value = lerp(0,100,progress_bar_value)
 		if progress_bar_value != 0: RenderingServer.global_shader_parameter_set("purifying_progress",progress_bar_value)
 		else: $Sprite_Progress_Bar.visible = false
@@ -187,7 +187,7 @@ func detect_colissions() -> bool:
 func get_colissions( Raycast:RayCast3D ) ->bool:
 	if Raycast.is_colliding():
 		var col = Raycast.get_collider() as CharacterBody3D
-		#print(col)
+
 		if col.is_in_group("Player") && player_detector(col): 
 			selected_raycast = Raycast
 			return true
