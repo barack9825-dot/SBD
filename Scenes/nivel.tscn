@@ -41,6 +41,15 @@ size = Vector3(1, 1, 0.96899414)
 [sub_resource type="SphereShape3D" id="SphereShape3D_dbcgh"]
 radius = 2.18127
 
+[sub_resource type="BoxMesh" id="BoxMesh_h2bki"]
+size = Vector3(0.51953125, 0.15, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q0ge5"]
+size = Vector3(0.51953125, 0.15, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0m3dr"]
+size = Vector3(0.51953125, 0.15, 1)
+
 [node name="Nivel" type="Node3D" unique_id=1559087209]
 script = ExtResource("1_dgjcf")
 
@@ -171,9 +180,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.734957, 3.327406, -8.731447
 
 [node name="Collectable" parent="." unique_id=932186142 instance=ExtResource("10_fhcna")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 0.620409, -12.236271)
+collision_layer = 4
 
 [node name="Collectable2" parent="." unique_id=1485026872 instance=ExtResource("10_fhcna")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 0.620409, -10.070351)
+
+[node name="Small Plattform" type="StaticBody3D" parent="." unique_id=25772299 groups=["Plataforma", "Small Plattform"]]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.734957, 2.3396955, -14.664937)
+collision_layer = 8
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Small Plattform" unique_id=985510924]
+mesh = SubResource("BoxMesh_h2bki")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Small Plattform" unique_id=1992518056]
+shape = SubResource("BoxShape3D_q0ge5")
+
+[node name="Small plattform Area" type="Area3D" parent="Small Plattform" unique_id=2123461057]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Small Plattform/Small plattform Area" unique_id=231542628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07382202, 0)
+shape = SubResource("BoxShape3D_0m3dr")
 
 [connection signal="body_exited" from="RouteArea" to="." method="_on_area_3d_3_body_exited"]
 [connection signal="body_entered" from="spotLightMeacnism/InterruptorArea" to="Player" method="_on_area_3d_2_body_entered"]
@@ -194,3 +220,4 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.73
 [connection signal="Purify" from="Player" to="Enemy2" method="_on_player_purify"]
 [connection signal="Attack" from="Enemy" to="Player" method="_on_enemy_attack"]
 [connection signal="Attack" from="Enemy2" to="Player" method="_on_enemy_attack"]
+[connection signal="body_entered" from="Small Plattform/Small plattform Area" to="Player" method="_on_small_plattform_area_body_entered"]

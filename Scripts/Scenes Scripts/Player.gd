@@ -5,7 +5,7 @@ extends Character
 @export var inventory  : Inv                  ## Inventario del jugador
 @export var curve      : Curve = Curve.new()
 @export var curveClimb : Curve = Curve.new()
-@export var interp     : float = 0.0 
+@export var interp     : float = 0.0
 @export var Jump_Speed : float = 40           ##Fuerza de salto
 
 signal Intensity(I,id)
@@ -16,19 +16,20 @@ signal Confirm(ans,position,id)
 
 #Declaración de variables
 var can_climb         : bool    = false       ##Variable para establecer el momento en que la animacion de escalar termina
-var can_dash          : bool    = true        ##Variable para establecer el momento del esquive   
+var can_dash          : bool    = true        ##Variable para establecer el momento del esquive
 var can_release       : bool    = true        ##Variable para poder liberarse del agarre
 var is_being_absorbed : bool    = false       ##Variable para saber si esta siendo purificado
 var is_dashing        : bool    = false       ##Variable para saber si esta esquivando
 var is_in_area        : bool    = false       ##Variable para detectar si esta en el area de encendido y apagado
 var is_purifying      : bool    = false       ##Permite al jugador activar la animación de purificar
+var is_in_edge        : bool    = false       ##Variable para detectar si esta en el borde
 var near_enemy        : bool    = false       ##Permite detectar si es hay un enemigo para poder purificarlo
 var running_speed     : float   = speed * 2   ##Multiplicador de la velocidad corriendo
 var stealth_speed     : float   = speed * 1   ##Multiplicador de la velocidad en sigilo
-var enemy_selected    : String                ##Enemigo con el se está interactuando   
+var enemy_selected    : String                ##Enemigo con el se está interactuando
 var identify          : String                ##Variable para identificar el tipo de nodo de luz con el que estamos intereactuando
-var screen_size       : Vector2               ##Variable que almacena el tamaño de la pantalla            
-var enemy_near        : Vector3               ##Para saber donde esta el enemigo que te esta purificando  
+var screen_size       : Vector2               ##Variable que almacena el tamaño de la pantalla
+var enemy_near        : Vector3               ##Para saber donde esta el enemigo que te esta purificando
 var path_position     : Vector3               ##Para obtener la posición global del path
 var storaged_error    : Vector3               ##Para la acción integral
 var tween             : Tween                 ##Instancia del tween
@@ -64,27 +65,27 @@ var Animations : Dictionary = {
 			playback.travel(ground_motion()),
 	
 	'Elevar':
-		func(): 
+		func():
 			velocity.z = -get_axis() * running_speed
 			
 			playback.travel(air_motion()),
 	
 	'Caer':
-		func(): 
+		func():
 			velocity.z = -get_axis() * running_speed
 			
 			playback.travel(air_motion()),
 	
 	'Incorporar':
-		func(): 
+		func():
 			velocity.z = -get_axis() * running_speed
 			
 			playback.travel(air_motion()),
 	
 	'Aterrizar':
-		func(): 
+		func():
 			velocity.z = 0
-			
+			set_collision_mask_value(4,true)
 			playback.travel(ground_motion()),
 	
 	'Subir':
@@ -93,7 +94,7 @@ var Animations : Dictionary = {
 				$Path3D.global_position = path_position
 				var error               = $Path3D/PathFollow3D.global_position-position
 				storaged_error         += error
-				velocity                = 6 * error + 0.7 * storaged_error, 
+				velocity                = 6 * error + 0.7 * storaged_error,
 	
 	'Idle_Caminar_Transition':
 		func():
@@ -134,6 +135,10 @@ var Animations : Dictionary = {
 	'Dash':
 		func():
 			playback.travel(ground_motion()),
+	'Unbalanced':
+		func():
+			velocity.z = 0
+			playback.travel(ground_motion())
 }
 
 #Inicialización
@@ -154,8 +159,8 @@ func get_axis() ->int: ##Lógica de obtencón de dirección
 
 #Funciones del bucle jugable
 func ground_motion() ->String: ##Función para establecer las condiciones en las animaciones terrestres
-	if is_on_floor():
-		can_climb = true ##OJO veriicar si es necesario la condicion is_on_floor
+	if is_on_floor() && !is_in_edge:
+		can_climb = true #OJO veriicar si es necesario la condicion is_on_floor
 		if is_being_absorbed:
 			tween_func(abs(position.z-enemy_near.z)-0.21,position.z,0.2)
 			return "Being_Absorbed"
@@ -175,12 +180,27 @@ func ground_motion() ->String: ##Función para establecer las condiciones en las
 				return "Correr"
 			
 			elif Input.is_action_pressed("Sigilo"): return "Sigilo"
-			else:                                   return "Caminar"
+			else                                  : return "Caminar"
 		
 		else: return "Idle"
+		
+	elif is_in_edge:
+		if $BalanceTime.is_stopped():
+			$BalanceTime.start(1)
+		if Input.is_action_just_pressed("ui_accept") && !(playback.get_current_node() in ['Aterrizar','Dash']):
+			velocity.y += Jump_Speed
+
+			$BalanceTime.stop()
+			is_in_edge = false
+			return "Elevar"
+
+		return "Unbalanced"
 	
 	elif can_climb: return "Caer"
-	else:           return "Idle"
+	
+	
+	
+	else: return "Idle"
 
 func air_motion() ->String: ##Función para establecer las condiciones en las animaciones aéreas
 	if is_being_absorbed:
@@ -197,17 +217,23 @@ func air_motion() ->String: ##Función para establecer las condiciones en las an
 			tween_funcT($Path3D/PathFollow3D.progress_ratio,$AnimationPlayer.get_animation("Subir").length)
 			return "Subir"
 	
-	if   velocity.y < 0:  return "Caer"
-	elif velocity.y < Jump_Speed * 3/10: return "Incorporar"
-	elif is_on_floor():   return "Aterrizar"
+	if   velocity.y < 0              : return "Caer"
+	elif is_on_floor()               :
+		return "Aterrizar"
+	elif is_on_floor() && is_in_edge : return "Unbalanced"
+	
+	elif velocity.y < Jump_Speed * 3/10:
+		return "Incorporar"
+	
 	else:                 return "Elevar"
 
-func climb() ->void: 
+func climb() ->void:
 	if !is_on_floor() && $RayCast3D.is_colliding():
-		var col = $RayCast3D.get_collider()
+		var col = $RayCast3D.get_collider() as StaticBody3D
 		if col.is_in_group("Plataforma"):
 			$RayCast3D.enabled = false
 			playback.travel("Subir")
+#			is_in_edge = col.get_groups().has("Small Plattform")
 
 func flip_h_player() ->void: ##Función para voltear el Sprite en la dirección correcta
 	if !["Subir","Being_Absorved","Being_Absorved2","Dash_2","Caminar_Idle_Transition"].has(playback.get_current_node()): flip_h()
@@ -238,8 +264,8 @@ func light_bend():
 
 func release():
 	if Input.is_action_just_pressed("Liberarse"):
-		is_being_absorbed                                   = false
-		interp                                              = 0.0
+		is_being_absorbed = false
+		interp            = 0.0
 		
 		playback.travel("Idle")
 		
@@ -248,13 +274,13 @@ func release():
 		emit_signal("Freedom",position.z,enemy_selected)
 
 func motion(delta):
-	if !is_purifying:
+	if !is_purifying: #&& !is_in_edge:
 		
 		state_machine(Animations)
 		
 		if !is_being_absorbed: jump_modulator(delta)
 		
-		if playback.get_current_node() != "Dash": 
+		if playback.get_current_node() != "Dash":
 			move_and_slide()
 		
 			flip_h_player()
@@ -262,13 +288,13 @@ func motion(delta):
 		if !is_being_absorbed: jump_modulator(delta)
 	
 	climb()
-
+	
+		
+	
 
 #Bucle jugable
 func _physics_process(delta) ->void:
-	
-	#print($DyingTime.time_left)
-	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1 
+	$Path3D.scale.x = 1 if $Sprite3D.flip_h else -1
 	
 	#Lógica de purificación
 	if Input.is_action_just_pressed("Purificar") && near_enemy && !is_being_absorbed: emit_signal("Purify","start",enemy_selected)
@@ -335,11 +361,10 @@ func _on_area_3d_3_body_entered(_body):
 
 func _on_area_3d_3_body_exited(_body): is_in_area = false
 
-func _on_area_3d_body_entered(body): 
-	if body.is_in_group("Enemy"): 
+func _on_area_3d_body_entered(body):
+	if body.is_in_group("Enemy"):
 		near_enemy = true
 		var player = body as CharacterBody3D
-		#print(player.get_groups()[1])
 		enemy_selected = player.get_groups()[1]
 
 func _on_area_3d_body_exited(body): if body.is_in_group("Enemy"): near_enemy = false
@@ -371,6 +396,17 @@ func start_dashing():
 func end_climbing():
 	$CollisionShape3D.disabled = false
 	$RayCast3D.enabled         = true
+	playback.travel("Idle")
 
 func game_over():
 	can_release = false
+
+
+func _on_small_plattform_area_body_entered(body: Node3D) -> void:
+	is_in_edge = true
+
+
+func _on_balance_time_timeout() -> void:
+	set_collision_mask_value(4,false)
+	$BalanceTime.stop()
+	is_in_edge = false

@@ -74,5 +74,4 @@ func CurveFuncLigh():
 
 
 func _on_area_3d_3_body_exited(body):
-	print("He left")
 	if body.has_method('turn'): body.turn()

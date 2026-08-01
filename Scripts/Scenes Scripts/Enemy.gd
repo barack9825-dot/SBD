@@ -187,6 +187,7 @@ func detect_colissions() -> bool:
 func get_colissions( Raycast:RayCast3D ) ->bool:
 	if Raycast.is_colliding():
 		var col = Raycast.get_collider() as CharacterBody3D
+		#print(col)
 		if col.is_in_group("Player") && player_detector(col): 
 			selected_raycast = Raycast
 			return true

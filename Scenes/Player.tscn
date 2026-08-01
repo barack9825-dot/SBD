@@ -1181,6 +1181,60 @@ tracks/5/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_arntx"]
+resource_name = "Unbalanced"
+length = 0.3833350199924782
+loop_mode = 1
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0009999999),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("9_sib1b")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite3D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite3D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.016666668, 0.033333335, 0.050000004, 0.06666667, 0.083333336, 0.10000001, 0.116666675, 0.13333334, 0.15, 0.16666667, 0.18333334, 0.20000002, 0.21666668, 0.23333335, 0.25, 0.26666668, 0.28333336, 0.3, 0.3166667, 0.33333334, 0.35000002, 0.36666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gsvab"]
 _data = {
 &"Aterrizar": SubResource("Animation_0vrly"),
@@ -1199,7 +1253,8 @@ _data = {
 &"Liberarse": SubResource("Animation_do54x"),
 &"RESET": SubResource("Animation_qgu5s"),
 &"Sigilo": SubResource("Animation_h7aj4"),
-&"Subir": SubResource("Animation_g30gx")
+&"Subir": SubResource("Animation_g30gx"),
+&"Unbalanced": SubResource("Animation_arntx")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iljp4"]
@@ -1252,6 +1307,9 @@ animation = &"Sigilo"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dqv1c"]
 animation = &"Subir"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_arntx"]
+animation = &"Unbalanced"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qchmt"]
 advance_mode = 2
@@ -1379,7 +1437,6 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1qrlq"]
 switch_mode = 2
-advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_orm6j"]
 
@@ -1390,6 +1447,16 @@ advance_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ee11f"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e4jd2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_arntx"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lslt6"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ulo2v"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1iu4k"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m0x7a"]
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_slodo"]
 states/Aterrizar/node = SubResource("AnimationNodeAnimation_iljp4")
@@ -1423,12 +1490,14 @@ states/Incorporar/position = Vector2(463, 605.011)
 states/Liberarse/node = SubResource("AnimationNodeAnimation_mit3q")
 states/Liberarse/position = Vector2(615.378, -61.4384)
 states/Sigilo/node = SubResource("AnimationNodeAnimation_cayj8")
-states/Sigilo/position = Vector2(463, 377.866)
+states/Sigilo/position = Vector2(495, 399.866)
 states/Start/position = Vector2(228, -164)
 states/Subir/node = SubResource("AnimationNodeAnimation_dqv1c")
 states/Subir/position = Vector2(218.378, 808.05)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_qchmt"), "Idle", "Idle_Caminar_Transition", SubResource("AnimationNodeStateMachineTransition_uq5i7"), "Idle_Caminar_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_esk32"), "Idle", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_fp6ao"), "Idle_Correr_Transition", "Correr", SubResource("AnimationNodeStateMachineTransition_bu7ak"), "Caminar", "Caminar_Idle_Transition", SubResource("AnimationNodeStateMachineTransition_22oxy"), "Correr", "Correr_Idle_Transition", SubResource("AnimationNodeStateMachineTransition_bps8p"), "Caminar", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_eiuiy"), "Correr_Idle_Transition", "Idle", SubResource("AnimationNodeStateMachineTransition_x14pn"), "Correr_Idle_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_hxaop"), "Caminar_Idle_Transition", "Idle", SubResource("AnimationNodeStateMachineTransition_lxpkg"), "Caminar_Idle_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_wpplu"), "Idle", "Sigilo", SubResource("AnimationNodeStateMachineTransition_g4ewj"), "Caminar", "Sigilo", SubResource("AnimationNodeStateMachineTransition_prhtc"), "Correr", "Sigilo", SubResource("AnimationNodeStateMachineTransition_1hydh"), "Sigilo", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_judaq"), "Sigilo", "Idle_Caminar_Transition", SubResource("AnimationNodeStateMachineTransition_3cjxq"), "Sigilo", "Idle", SubResource("AnimationNodeStateMachineTransition_fcy25"), "Idle", "Elevar", SubResource("AnimationNodeStateMachineTransition_2ra7t"), "Caminar", "Elevar", SubResource("AnimationNodeStateMachineTransition_ifp1r"), "Sigilo", "Elevar", SubResource("AnimationNodeStateMachineTransition_25esc"), "Correr", "Elevar", SubResource("AnimationNodeStateMachineTransition_xduue"), "Elevar", "Incorporar", SubResource("AnimationNodeStateMachineTransition_iwrsl"), "Incorporar", "Caer", SubResource("AnimationNodeStateMachineTransition_vhgnm"), "Correr", "Caer", SubResource("AnimationNodeStateMachineTransition_g7agp"), "Sigilo", "Caer", SubResource("AnimationNodeStateMachineTransition_3j4bo"), "Caminar", "Caer", SubResource("AnimationNodeStateMachineTransition_qfi3f"), "Idle", "Caer", SubResource("AnimationNodeStateMachineTransition_etoab"), "Caer", "Aterrizar", SubResource("AnimationNodeStateMachineTransition_7qrsl"), "Aterrizar", "Idle", SubResource("AnimationNodeStateMachineTransition_2wvn2"), "Idle_Caminar_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_vqlkc"), "Idle_Correr_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_xl67k"), "Idle_Caminar_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_kngse"), "Idle_Correr_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_ovw50"), "Caminar_Idle_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_lpcmp"), "Caminar_Idle_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_kdqw3"), "Correr_Idle_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_dafgu"), "Correr_Idle_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_nkqpg"), "Idle", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_bwe5y"), "Caminar_Idle_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_inep4"), "Caminar", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_0g48h"), "Sigilo", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_aol1v"), "Idle_Caminar_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_j8lgh"), "Idle_Correr_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_2yepv"), "Correr", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_2ifkp"), "Correr_Idle_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_narvi"), "Correr", "Dash", SubResource("AnimationNodeStateMachineTransition_me2rn"), "Dash", "Idle", SubResource("AnimationNodeStateMachineTransition_33ype"), "Dash", "Correr", SubResource("AnimationNodeStateMachineTransition_v7lku"), "Dash", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_s1y2x"), "Being_Absorbed", "Liberarse", SubResource("AnimationNodeStateMachineTransition_5wvgg"), "Liberarse", "Idle", SubResource("AnimationNodeStateMachineTransition_flg2o"), "Elevar", "Subir", SubResource("AnimationNodeStateMachineTransition_q2bxh"), "Incorporar", "Subir", SubResource("AnimationNodeStateMachineTransition_ysygv"), "Caer", "Subir", SubResource("AnimationNodeStateMachineTransition_8wwaf"), "Subir", "Idle", SubResource("AnimationNodeStateMachineTransition_1qrlq"), "Elevar", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_orm6j"), "Incorporar", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_x0g7l"), "Caer", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_q0u33"), "Subir", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_ee11f"), "Being_Absorbed 2", "Liberarse", SubResource("AnimationNodeStateMachineTransition_e4jd2")]
-graph_offset = Vector2(-157.622, -337.624)
+states/Unbalanced/node = SubResource("AnimationNodeAnimation_arntx")
+states/Unbalanced/position = Vector2(671.378, 763.8855)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_qchmt"), "Idle", "Idle_Caminar_Transition", SubResource("AnimationNodeStateMachineTransition_uq5i7"), "Idle_Caminar_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_esk32"), "Idle", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_fp6ao"), "Idle_Correr_Transition", "Correr", SubResource("AnimationNodeStateMachineTransition_bu7ak"), "Caminar", "Caminar_Idle_Transition", SubResource("AnimationNodeStateMachineTransition_22oxy"), "Correr", "Correr_Idle_Transition", SubResource("AnimationNodeStateMachineTransition_bps8p"), "Caminar", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_eiuiy"), "Correr_Idle_Transition", "Idle", SubResource("AnimationNodeStateMachineTransition_x14pn"), "Correr_Idle_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_hxaop"), "Caminar_Idle_Transition", "Idle", SubResource("AnimationNodeStateMachineTransition_lxpkg"), "Caminar_Idle_Transition", "Caminar", SubResource("AnimationNodeStateMachineTransition_wpplu"), "Idle", "Sigilo", SubResource("AnimationNodeStateMachineTransition_g4ewj"), "Caminar", "Sigilo", SubResource("AnimationNodeStateMachineTransition_prhtc"), "Correr", "Sigilo", SubResource("AnimationNodeStateMachineTransition_1hydh"), "Sigilo", "Idle_Correr_Transition", SubResource("AnimationNodeStateMachineTransition_judaq"), "Sigilo", "Idle_Caminar_Transition", SubResource("AnimationNodeStateMachineTransition_3cjxq"), "Sigilo", "Idle", SubResource("AnimationNodeStateMachineTransition_fcy25"), "Idle", "Elevar", SubResource("AnimationNodeStateMachineTransition_2ra7t"), "Caminar", "Elevar", SubResource("AnimationNodeStateMachineTransition_ifp1r"), "Sigilo", "Elevar", SubResource("AnimationNodeStateMachineTransition_25esc"), "Correr", "Elevar", SubResource("AnimationNodeStateMachineTransition_xduue"), "Elevar", "Incorporar", SubResource("AnimationNodeStateMachineTransition_iwrsl"), "Incorporar", "Caer", SubResource("AnimationNodeStateMachineTransition_vhgnm"), "Correr", "Caer", SubResource("AnimationNodeStateMachineTransition_g7agp"), "Sigilo", "Caer", SubResource("AnimationNodeStateMachineTransition_3j4bo"), "Caminar", "Caer", SubResource("AnimationNodeStateMachineTransition_qfi3f"), "Idle", "Caer", SubResource("AnimationNodeStateMachineTransition_etoab"), "Caer", "Aterrizar", SubResource("AnimationNodeStateMachineTransition_7qrsl"), "Aterrizar", "Idle", SubResource("AnimationNodeStateMachineTransition_2wvn2"), "Idle_Caminar_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_vqlkc"), "Idle_Correr_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_xl67k"), "Idle_Caminar_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_kngse"), "Idle_Correr_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_ovw50"), "Caminar_Idle_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_lpcmp"), "Caminar_Idle_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_kdqw3"), "Correr_Idle_Transition", "Elevar", SubResource("AnimationNodeStateMachineTransition_dafgu"), "Correr_Idle_Transition", "Caer", SubResource("AnimationNodeStateMachineTransition_nkqpg"), "Idle", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_bwe5y"), "Caminar_Idle_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_inep4"), "Caminar", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_0g48h"), "Sigilo", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_aol1v"), "Idle_Caminar_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_j8lgh"), "Idle_Correr_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_2yepv"), "Correr", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_2ifkp"), "Correr_Idle_Transition", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_narvi"), "Correr", "Dash", SubResource("AnimationNodeStateMachineTransition_me2rn"), "Dash", "Idle", SubResource("AnimationNodeStateMachineTransition_33ype"), "Dash", "Correr", SubResource("AnimationNodeStateMachineTransition_v7lku"), "Dash", "Being_Absorbed", SubResource("AnimationNodeStateMachineTransition_s1y2x"), "Being_Absorbed", "Liberarse", SubResource("AnimationNodeStateMachineTransition_5wvgg"), "Liberarse", "Idle", SubResource("AnimationNodeStateMachineTransition_flg2o"), "Elevar", "Subir", SubResource("AnimationNodeStateMachineTransition_q2bxh"), "Incorporar", "Subir", SubResource("AnimationNodeStateMachineTransition_ysygv"), "Caer", "Subir", SubResource("AnimationNodeStateMachineTransition_8wwaf"), "Subir", "Idle", SubResource("AnimationNodeStateMachineTransition_1qrlq"), "Elevar", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_orm6j"), "Incorporar", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_x0g7l"), "Caer", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_q0u33"), "Subir", "Being_Absorbed 2", SubResource("AnimationNodeStateMachineTransition_ee11f"), "Being_Absorbed 2", "Liberarse", SubResource("AnimationNodeStateMachineTransition_e4jd2"), "Unbalanced", "Caer", SubResource("AnimationNodeStateMachineTransition_arntx"), "Idle", "Unbalanced", SubResource("AnimationNodeStateMachineTransition_lslt6"), "Unbalanced", "Elevar", SubResource("AnimationNodeStateMachineTransition_ulo2v"), "Caer", "Unbalanced", SubResource("AnimationNodeStateMachineTransition_1iu4k"), "Unbalanced", "Idle", SubResource("AnimationNodeStateMachineTransition_m0x7a")]
+graph_offset = Vector2(27.711933, 129.38359)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r5qb7"]
 size = Vector3(0.611084, 1, 0.046875)
@@ -1441,7 +1510,7 @@ _data = {
 point_count = 6
 
 [node name="Player" type="CharacterBody3D" unique_id=601352463 groups=["Player"]]
-collision_mask = 4
+collision_mask = 12
 script = ExtResource("1_utgpx")
 inventory = ExtResource("2_8j3a2")
 curve = SubResource("Curve_m87gy")
@@ -1491,6 +1560,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Cooldown" type="Timer" parent="." unique_id=1279721070]
 
+[node name="BalanceTime" type="Timer" parent="." unique_id=1596222841]
+
 [node name="Path3D" type="Path3D" parent="." unique_id=426772027]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 curve = SubResource("Curve3D_s01t8")
@@ -1503,3 +1574,4 @@ loop = false
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="timeout" from="DyingTime" to="." method="_on_dying_time_timeout"]
 [connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]
+[connection signal="timeout" from="BalanceTime" to="." method="_on_balance_time_timeout"]
